@@ -1,0 +1,142 @@
+/* Inventario.css */
+.inventario-container {
+  padding: 10px;
+  animation: fadeIn 0.5s ease;
+}
+
+.inventario-header {
+  margin-bottom: 2rem;
+}
+
+.inventario-header h2 {
+  color: #2e7d32;
+  margin-bottom: 5px;
+}
+
+.inventario-header p {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* --- FORMULARIO ESTILIZADO --- */
+.inventario-form {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  margin-bottom: 30px;
+  border-left: 5px solid #4caf50;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.inventario-form input, 
+.inventario-form select {
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+}
+
+.inventario-form input:focus {
+  border-color: #4caf50;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* --- TABLA PROFESIONAL --- */
+.table-wrapper {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.inventario-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.inventario-table th {
+  background: #f8faf9;
+  padding: 15px;
+  color: #444;
+  font-weight: 600;
+  border-bottom: 2px solid #edf2f0;
+}
+
+.inventario-table td {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.inventario-table tr:hover {
+  background-color: #f9fff9;
+}
+
+/* --- BADGES (Etiquetas de Estado) --- */
+.badge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.badge.disponible { background: #e8f5e9; color: #2e7d32; }
+.badge.agotado { background: #ffebee; color: #c62828; }
+.badge.en-proceso { background: #fff3e0; color: #ef6c00; }
+
+/* --- BOTONES --- */
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.btn-save { background: #2e7d32; color: white; padding: 10px 20px; }
+.btn-save:hover { background: #1b5e20; }
+
+.btn-cancel { background: #9e9e9e; color: white; padding: 10px 20px; }
+
+.actions-cell {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-edit {
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 6px 12px;
+}
+
+.btn-edit:hover { background: #1976d2; color: white; }
+
+.btn-delete {
+  background: #fff5f5;
+  color: #e53935;
+  padding: 6px 12px;
+}
+
+.btn-delete:hover { background: #e53935; color: white; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
