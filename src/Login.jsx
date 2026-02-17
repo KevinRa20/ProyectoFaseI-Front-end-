@@ -21,30 +21,35 @@ function Login() {
   
  const navigate = useNavigate();
    const handleSubmit = async (e) => {
-     e.preventDefault();
-    try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(form)
-      });
+  e.preventDefault();
 
-      const data = await res.json();
-      alert(data.msg);
+  try {
+    const res = await fetch("http://localhost:5000/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(form)
+    });
 
-      if (res.ok) {
-       setForm({  email: "", password: "" });
+    const data = await res.json(); // SOLO UNA VEZ
+    alert(data.msg);
+
+    if (res.ok) {
+      setForm({ email: "", password: "" });
+
+      if (data.rol === "productor") {
         navigate("/panelproductor");
+      } else if (data.rol === "comprador") {
+        navigate("/panelcomprador");
       }
-
-
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Error al conectar con el servidor");
     }
-  };
+
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Error al conectar con el servidor");
+  }
+};
 
   return (
     <div className="register-container">

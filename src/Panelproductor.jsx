@@ -1,164 +1,88 @@
 import React, { useState } from "react";
 import "./Panelproductor.css";
-import { useNavigate } from "react-router-dom";
-import Inventario from "./Inventario";
-import Notificaciones from "./Notificaciones";
 
-const Dashboard = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [search, setSearch] = useState("");
-  const [showForm, setShowForm] = useState(false);
-  const [products, setProducts] = useState([]);
-  const [vista, setVista] = useState("inicio"); 
+const PanelProductor = () => {
+  const [filtro, setFiltro] = useState("semana");
 
-  const navigate = useNavigate();
-
-  const [formData, setFormData] = useState({
-    image: null,
-    name: "",
-    description: "",
-    price: "",
-    quantity: "",
-    tipoventa: "",
-    location: "",
-  });
-
-  const handleSearch = (e) => {
-    setSearch(e.target.value);
-    console.log("Buscando:", e.target.value);
-  };
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleImageChange = (e) => {
-    setFormData({
-      ...formData,
-      image: URL.createObjectURL(e.target.files[0]),
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setProducts([...products, formData]);
-    setFormData({
-      image: null,
-      name: "",
-      description: "",
-      price: "",
-      quantity: "",
-      tipoventa: "",
-      location: "",
-    });
-    setShowForm(false);
-  };
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate("/login");
-
-  };
-   
   return (
-<div className="dashboard-container">
-{/* Barra superior */}
-<header className="top-bar">
- <h2>Agro Commerce</h2>
+    <div className="panel">
 
-{/* Buscador */}
-<input
-type="text"
-placeholder="Buscador"
-value={search}
-onChange={handleSearch}
-className="search-input"
-/>
-{/* Perfil */}
-<div className="profile-container">
-<img
-src="https://cdn-icons-png.flaticon.com/128/2550/2550260.png"
-alt="Perfil"
-className="profile-icon"
-onClick={() => setMenuOpen(!menuOpen)}
-/>
+      <header className="header">
+        <div>
+          <h1>Panel de Productor</h1>
+          <h2>Bienvenido</h2>
+        </div>
+        <button className="logout">Cerrar Sesión</button>
+      </header>
 
-{menuOpen && (
-<div className="dropdown-menu">
-<button onClick={() => setVista("inicio")}>
-Inicio </button>
-<button onClick={() => setShowForm(true)}>
-Publicar un producto</button>
+      <nav className="menu">
+        <button className="active">Análisis de Ventas</button>
+        <button>Mis Productos</button>
+        <button>Inventario</button>
+        <button>Notificaciones</button>
+      </nav>
 
-<button onClick={() => setVista("inventario")}>
-Inventario
-</button>
-<button onClick={() => setVista("notificaciones")}>Notificaciones</button>
-<button>Compras</button>
-<button>Ventas</button>
-<button>Chats</button>
-<hr />
-<button className="loginout" onClick={handleLogout}>Cerrar Sesión</button>
-<button className="delete">Eliminar cuenta</button>
-</div>
- )}
-</div></header>
+      <section className="dashboard-header">
+        <h2>Dashboard de Ventas</h2>
+        <div className="filtros">
+          <button className={filtro==="semana"?"activo":""} onClick={()=>setFiltro("semana")}>Semana</button>
+          <button className={filtro==="mes"?"activo":""} onClick={()=>setFiltro("mes")}>Mes</button>
+          <button className={filtro==="año"?"activo":""} onClick={()=>setFiltro("año")}>Año</button>
+        </div>
+      </section>
 
-{/* Modal registrar producto */}
-  {showForm && (
-  <div className="modal">
-  <div className="modal-content">
-  <h3>Publica un producto</h3>
+      <section className="cards">
+        <div className="card green">
+          <h3>Ingresos Totales</h3>
+          <p>L.0.00</p>
+        </div>
+        <div className="card blue">
+          <h3>Total Órdenes</h3>
+          <p>0</p>
+        </div>
+        <div className="card purple">
+          <h3>Productos Activos</h3>
+          <p>0</p>
+        </div>
+        <div className="card orange">
+          <h3>Ticket Promedio</h3>
+          <p>L.0.00</p>
+        </div>
+      </section>
 
-  <form onSubmit={handleSubmit}>
-  <input type="file" onChange={handleImageChange} required />
+      <section className="box">
+        <h2>Rendimiento por Producto</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Categoría</th>
+              <th>Vendido</th>
+              <th>Ingresos</th>
+              <th>Stock</th>
+              <th>Calificación</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colSpan="6" className="empty">No hay datos de ventas para mostrar</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
 
-  <input name="name" placeholder="Nombre" value={formData.name} onChange={handleChange} required />
-  <input name="description" placeholder="Descripción" value={formData.description} onChange={handleChange} required />
-  <input name="price" type="number" placeholder="Precio" value={formData.price} onChange={handleChange} required />
-  <input name="quantity" type="number" placeholder="Cantidad" value={formData.quantity} onChange={handleChange} required />
-  <input name="tipoventa" placeholder="Tipo de venta" value={formData.tipoventa} onChange={handleChange} required />
-  <input name="location" placeholder="Ubicación" value={formData.location} onChange={handleChange} required />
+      <section className="box">
+        <h2>Ingresos por Categoría</h2>
+        <div className="empty">No hay datos de categorías</div>
+      </section>
 
-<div className="modal-buttons">
-<button type="submit">Guardar Producto</button>
-<button type="button" onClick={() => setShowForm(false)}>Cancelar</button>
-</div>
-</form>
-</div>
-</div>
-)}
+      <section className="box">
+        <h2>Órdenes Recientes</h2>
+        <div className="empty">No hay órdenes recientes</div>
+      </section>
 
-{/* CONTENIDO CENTRAL */}
-<main className="main-content">
-{vista === "inicio" && (
-<>
-<h3>Bienvenido a tu panel</h3>
-<p>Use el buscador o el menú para gestionar sus productos.</p>
-
-<h3>Productos Disponibles</h3>
-<div className="product-grid">
-{products.map((product, index) => (
-<div className="product-card" key={index}>
-<img src={product.image} alt="producto" />
-<h4>{product.name}</h4>
-<p>Descripción: {product.description}</p>
-<p>Precio: L. {product.price}</p>
-<p>Cantidad: {product.quantity}</p>
-<p>Tipo de Venta: {product.tipoventa}</p>
-<p>Ubicación: {product.location}</p>
-</div>
-))}
-</div>
-</>
-)}
-{vista === "notificaciones" && <Notificaciones />}
-{vista === "inventario" && <Inventario />}
-</main>
-</div>
+    </div>
   );
 };
 
-export default Dashboard;
+export default PanelProductor;

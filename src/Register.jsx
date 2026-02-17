@@ -55,13 +55,12 @@ className="icono-registro"
 src="https://cdn-icons-png.flaticon.com/128/7542/7542074.png"
 alt="icono-registro"
         />
-        <h2>Registro de Usuario</h2>
-
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Nombre</label>
-            <input
-              type="text"
+<h2>Registro de Usuario</h2>
+<form onSubmit={handleSubmit}>
+<div className="form-group">
+<label>Nombre</label>
+<input
+type="text"
               name="name"
               placeholder="Ingresa tu nombre"
               value={form.name}

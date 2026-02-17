@@ -1,229 +1,126 @@
-
-:root {
-  --primary: #1ec926;
-  --primary-hover: #32bb09;
-  --bg-light: #f4f7f6;
-  --white: #ffffff;
-  --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  --danger: #d32f2f;
-}
-
 body {
   margin: 0;
-  font-family: 'Segoe UI', Roboto, sans-serif;
-  background-color: var(--bg-light);
-  color: #333;
+  font-family: Arial, sans-serif;
+  background: #f3f4f6;
 }
 
-.dashboard-container {
+.panel {
   min-height: 100vh;
 }
-
-/* --- BARRA SUPERIOR (UX Mejorada) --- */
-.top-bar {
+.logout {
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 12px;
+  width: 70px;
+  height: 40px;
+ 
+}
+.header {
+  background: white;
+  padding: 15px 25px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.8rem 2rem;
-  background-color: var(--primary);
-  color: white;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-  position: sticky;
-  top: 0;
-  z-index: 100;
 }
 
-.top-bar h2 {
-  margin: 0;
-  font-weight: 600;
-  letter-spacing: 1px;
-}
-
-.search-input {
-  width: 40%;
-  padding: 10px 20px;
-  border-radius: 25px;
-  border: none;
-  outline: none;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
-
-.search-input:focus {
-  width: 45%;
-  box-shadow: 0 0 8px rgba(255,255,255,0.5);
-}
-
-/* --- PERFIL Y DROPDOWN --- */
-.profile-container {
-  position: relative;
-}
-
-.profile-icon {
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  cursor: pointer;
-  border: 2px solid white;
-  transition: transform 0.2s;
-}
-
-.profile-icon:hover {
-  transform: scale(1.1);
-}
-
-.dropdown-menu {
-  position: absolute;
-  right: 0;
-  top: 55px;
-  background: white;
-  width: 220px;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  padding: 10px 0;
-  overflow: hidden;
-  animation: slideDown 0.3s ease-out;
-}
-
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.dropdown-menu button {
-  width: 100%;
-  padding: 12px 20px;
-  border: none;
-  background: none;
-  text-align: left;
-  cursor: pointer;
-  font-size: 0.95rem;
-  color: #444;
-  transition: background 0.2s;
-}
-
-.dropdown-menu button:hover {
-  background-color: var(--bg-light);
-  color: var(--primary);
-}
-
-.dropdown-menu hr { border: 0.5px solid #eee; margin: 5px 0; }
-
-.loginout { color: var(--danger) !important; font-weight: bold; }
-.delete { color: #888 !important; font-size: 0.8rem !important; }
-
-/* --- CONTENIDO PRINCIPAL --- */
-.main-content {
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* --- GRID DE PRODUCTOS --- */
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 25px;
-  margin-top: 20px;
-}
-
-.product-card {
-  background: white;
-  border-radius: 15px;
-  overflow: hidden;
-  transition: transform 0.3s, box-shadow 0.3s;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-  border: 1px solid #eee;
-}
-
-.product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow);
-}
-
-.product-card img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.product-card h4 {
-  padding: 15px 15px 5px;
-  margin: 0;
-  color: var(--primary);
-}
-
-.product-card p {
-  padding: 0 15px;
-  margin: 5px 0;
-  font-size: 0.9rem;
-  color: #666;
-}
-
-.product-card p:last-child {
-  padding-bottom: 20px;
-  font-weight: bold;
-  color: var(--primary);
-}
-
-/* --- MODAL (REGISTRAR PRODUCTO) --- */
-.modal {
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  backdrop-filter: blur(4px);
-}
-
-.modal-content {
-  background: white;
-  padding: 30px;
-  border-radius: 20px;
-  width: 400px;
-  max-width: 90% ;
-  box-shadow: var(--shadow);
-}
-
-.modal-content form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.modal-content input {
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  outline-color: var(--primary);
-}
-
-.modal-buttons {
+.menu {
   display: flex;
   gap: 10px;
-  margin-top: 15px;
+  padding: 20px;
 }
 
-.modal-buttons button {
-  flex: 1;
-  padding: 12px;
-  border-radius: 8px;
+.menu button {
+  padding: 10px 20px;
+  border-radius: 10px;
   border: none;
   cursor: pointer;
   font-weight: bold;
 }
 
-.modal-buttons button[type="submit"] {
-  background: var(--primary);
+.menu .active {
+  background: #e3f186;
   color: white;
 }
 
-.modal-buttons button[type="button"] {
-  background: #eee;
+.dashboard-header {
+  background: white;
+  margin: 0 20px;
+  padding: 15px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+  
+}
+.filtros {
+ display: flex;            
+  justify-content: center;  
+  align-items: center;      
+  gap: 10px;                
+  width: 100%;
+  font-weight: bold;
+}
+.filtros button {
+  padding: 6px 12px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  
 }
 
-.modal-buttons button:hover {
-  opacity: 0.9;
+.filtros .activo {
+  background: #9fe462;
+  color: rgb(236, 240, 237);
+  font-weight: bold;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 15px;
+  padding: 20px;
+}
+
+.card {
+  color: #141212;
+  padding: 20px;
+  border-radius: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  align-items: center;
+}
+
+.green { background: #9fe462; }
+.blue { background: #3f6095; }
+.purple { background: #8e71a9; }
+.orange { background: #836652; }
+
+.box {
+  background: rgb(246, 242, 242);
+  margin: 20px;
+  padding: 15px;
+  border-radius: 15px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  padding: 10px;
+}
+
+td {
+  padding: 15px;
+}
+
+.empty {
+  text-align: center;
+  color: gray;
+  padding: 30px;
 }
