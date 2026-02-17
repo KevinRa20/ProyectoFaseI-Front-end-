@@ -36,7 +36,7 @@ function Login() {
 
       if (res.ok) {
        setForm({  email: "", password: "" });
-        navigate("/dashboard");
+        navigate("/panelproductor");
       }
 
 

@@ -23,7 +23,7 @@ function Home() {
         <h2>¿Qué es AGRO COMMERCE?</h2>
         <img className="Imagen1" src="https://d26m4ikkajfmz.cloudfront.net/wp-content/uploads/2022/11/principal-16.jpg" alt=" Imagen1" />
         <p>
-          Es una plataforma  diseñada para conectar
+          Es una plataforma digital diseñada para conectar
           a los productores agrícolas con compradores, facilitando la 
           comercialización de productos de manera rápida, segura y eficiente.
         </p>

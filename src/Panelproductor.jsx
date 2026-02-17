@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Dashboard.css";
+import "./Panelproductor.css";
 import { useNavigate } from "react-router-dom";
 import Inventario from "./Inventario";
 import Notificaciones from "./Notificaciones";
@@ -69,64 +69,42 @@ const Dashboard = () => {
  <h2>Agro Commerce</h2>
 
 {/* Buscador */}
-        <input
-          type="text"
-          placeholder="Buscador"
-          value={search}
-          onChange={handleSearch}
-          className="search-input"
-        />
-
-        <div className="top-icons">
-          {/* Notificaciones */}
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/1827/1827392.png"
-            alt="Notificaciones"
-            className="notification-icon"
-          />
-          <div className="top-icons">
-          {/* Carrito de compras */}
-          <img
-            src="https://cdn-icons-png.flaticon.com/128/833/833314.png"
-            alt="Carritocompras"
-            className="compras-icon"
-          />
-
-          {/* Perfil */}
-          <div className="profile-container">
-            <img
-              src="https://cdn-icons-png.flaticon.com/128/149/149071.png"
-              alt="Perfil"
-              className="profile-icon"
-              onClick={() => setMenuOpen(!menuOpen)}
-            />
+<input
+type="text"
+placeholder="Buscador"
+value={search}
+onChange={handleSearch}
+className="search-input"
+/>
+{/* Perfil */}
+<div className="profile-container">
+<img
+src="https://cdn-icons-png.flaticon.com/128/2550/2550260.png"
+alt="Perfil"
+className="profile-icon"
+onClick={() => setMenuOpen(!menuOpen)}
+/>
 
 {menuOpen && (
 <div className="dropdown-menu">
 <button onClick={() => setVista("inicio")}>
 Inicio </button>
-                <button onClick={() => setShowForm(true)}>
-                  Publicar un producto</button>
+<button onClick={() => setShowForm(true)}>
+Publicar un producto</button>
 
-                <button onClick={() => setVista("inventario")}>
-                  Inventario
-                </button>
-
-                <button onClick={() => setVista("notificaciones")}>Notificaciones</button>
-                <button>Compras</button>
-                <button>Ventas</button>
-                <button>Chats</button>
-                <hr />
-                <button className="loginout" onClick={handleLogout}>
-                  Cerrar Sesión
-                </button>
-                <button className="delete">Eliminar cuenta</button>
-              </div>
-            )}
-          </div>
-        </div>
-        </div>
-      </header>
+<button onClick={() => setVista("inventario")}>
+Inventario
+</button>
+<button onClick={() => setVista("notificaciones")}>Notificaciones</button>
+<button>Compras</button>
+<button>Ventas</button>
+<button>Chats</button>
+<hr />
+<button className="loginout" onClick={handleLogout}>Cerrar Sesión</button>
+<button className="delete">Eliminar cuenta</button>
+</div>
+ )}
+</div></header>
 
 {/* Modal registrar producto */}
   {showForm && (
@@ -151,15 +129,14 @@ Inicio </button>
 </form>
 </div>
 </div>
-      )}
+)}
 
-      {/* CONTENIDO CENTRAL */}
-      <main className="main-content">
-
-        {vista === "inicio" && (
-          <>
-  <h3>Bienvenido a tu panel</h3>
-  <p>Use el buscador o el menú para gestionar sus productos.</p>
+{/* CONTENIDO CENTRAL */}
+<main className="main-content">
+{vista === "inicio" && (
+<>
+<h3>Bienvenido a tu panel</h3>
+<p>Use el buscador o el menú para gestionar sus productos.</p>
 
 <h3>Productos Disponibles</h3>
 <div className="product-grid">
@@ -179,10 +156,8 @@ Inicio </button>
 )}
 {vista === "notificaciones" && <Notificaciones />}
 {vista === "inventario" && <Inventario />}
-
-
-      </main>
-    </div>
+</main>
+</div>
   );
 };
 
