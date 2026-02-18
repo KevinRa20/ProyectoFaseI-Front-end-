@@ -2,11 +2,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
 :root {
-  --primary-green: #1aec1a;
-  --dark-green: #39703a;
+  --primary-green: #8fde8f;
+  --dark-green: #7de47f;
   --white: #ffffff;
-  --light-gray: #c9f3bc;
-  --text-dark: #2c3e50;
+  --light-gray: #cef7c2;
+  --text-dark: #030303;
   --transition: all 0.3s ease;
 }
 .Imagen1 {

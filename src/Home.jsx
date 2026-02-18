@@ -25,7 +25,7 @@ function Home() {
         <p>
           Es una plataforma digital diseñada para conectar
           a los productores agrícolas con compradores, facilitando la 
-          comercialización de productos de manera rápida, segura y eficiente.
+          comercialización de productos en agrícolas de manera facil, rápida, segura y eficiente.
         </p>
       </section>
 
