@@ -77,7 +77,7 @@ const Inventario = () => {
 <div className="inventario-container">
   <div className="inventario-header">
     <h2>Registro de Inventario</h2>
-    <p>Gestiona el control de productos y fechas de cosecha.</p>
+    <p>Gestiona el control de tus productos y fechas de cosecha.</p>
   </div>
 
   <form className="inventario-form" onSubmit={guardar}>
@@ -108,7 +108,7 @@ const Inventario = () => {
       <thead>
         <tr>
           <th>ID Producto</th>
-          <th>Nombre</th>
+          <th>Nombre del Producto</th>
           <th>Fecha de Cosecha</th>
           <th>Estado</th>
           <th>Acciones</th>

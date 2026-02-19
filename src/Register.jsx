@@ -61,11 +61,11 @@ alt="icono-registro"
 <label>Nombre</label>
 <input
 type="text"
-              name="name"
-              placeholder="Ingresa tu nombre"
-              value={form.name}
-              onChange={handleChange}
-              required
+name="name"
+placeholder="Ingresa tu nombre"
+value={form.name}
+onChange={handleChange}
+required
             />
           </div>
 

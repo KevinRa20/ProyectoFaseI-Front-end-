@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./Panelproductor.css";
 import { useNavigate } from "react-router-dom";
+import Inventario from "./Inventario";
+import Notificaciones from "./Notificaciones"
 
 const PanelProductor = () => {
   const [filtro, setFiltro] = useState("semana");
+  const [vista, setVista] = useState("inicio");
   const [editandoIndex, setEditandoIndex] = useState(null);
   const [mostrarForm, setMostrarForm] = useState(false);
   const [productos, setProductos] = useState([]);
@@ -88,14 +91,14 @@ const editarProducto = (index) => {
 </div>
 <button className="logout" onClick={() => navigate("/login")}>Salir</button>
 </header>
-
 <nav className="menu">
-<button className="active">Análisis de Ventas</button>
+<button className="active"onClick={() => navigate("/panelproductor")}>Análisis de Ventas</button>
 <button onClick={() => setMostrarForm(true)}>Mis Productos</button>
-<button>Inventario</button>
-<button>Notificaciones</button>
+<button onClick={() => setVista("inventario")}>Inventario</button>
+<button onClick={() => setVista("notificaciones")}>Notificaciones</button>
 </nav>
-
+{vista === "inventario" && <Inventario />}
+{vista === "notificaciones" && <Notificaciones/>}
 {/* FORMULARIO */}
 {mostrarForm && (
 <div className="modal">
