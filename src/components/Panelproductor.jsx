@@ -5,7 +5,6 @@ import Inventario from "../pages/Inventario";
 import Notificaciones from "../pages/Notificaciones"
 
 const PanelProductor = () => {
-  const [filtro, setFiltro] = useState("semana");
   const [vista, setVista] = useState("inicio");
   const [editandoIndex, setEditandoIndex] = useState(null);
   const [mostrarForm, setMostrarForm] = useState(false);
@@ -162,7 +161,7 @@ L.{p.precio} / {p.unidad}
 ))}
 </div>
 </section>
-<section className="cards">
+<section className="cardsproductor">
 <div className="card green">
 <h3>Ingresos Totales</h3>
 <p>L.{productos.reduce((a,b)=>a+b.ingresos,0)}</p>
@@ -213,9 +212,15 @@ L.{p.precio} / {p.unidad}
 <h2>Ingresos por Categoría</h2>
 {productos.map((p,i)=>(
 <div key={i}>{p.categoria} - L.{p.ingresos}</div>
+
 ))}
 </section>
+<section className="box"> <h2>Órdenes Recientes</h2> 
+<div className="empty">No hay órdenes recientes</div> 
+</section>
 </div>
+ 
+
   );
 };
 

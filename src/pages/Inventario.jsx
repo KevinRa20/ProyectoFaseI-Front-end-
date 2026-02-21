@@ -28,7 +28,7 @@ const Inventario = () => {
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-
+  
   // CREATE & UPDATE
   const guardar = async (e) => {
     e.preventDefault();
@@ -71,7 +71,7 @@ const Inventario = () => {
       estado: "Disponible",
     });
   };
-
+  
   return (
     // ... dentro del return de Inventario.js
 <div className="inventario-container">
@@ -81,59 +81,59 @@ const Inventario = () => {
   </div>
 
   <form className="inventario-form" onSubmit={guardar}>
-    <div className="form-grid">
-      <input name="idProducto" placeholder="ID Producto" onChange={handleChange} value={form.idProducto} required />
-      <input name="nombreProducto" placeholder="Nombre del producto" onChange={handleChange} value={form.nombreProducto} required />
-      <input type="date" name="fechaCosecha" onChange={handleChange} value={form.fechaCosecha} required />
-      <select name="estado" onChange={handleChange} value={form.estado}>
-        <option>Disponible</option>
-        <option>Agotado</option>
-        <option>En proceso</option>
-      </select>
-    </div>
-    <div className="form-actions">
-      <button type="submit" className="btn-save">
-        {editandoId ? "Actualizar Producto" : "Agregar al Inventario"}
-      </button>
-      {editandoId && (
-        <button type="button" className="btn-cancel" onClick={() => { limpiarFormulario(); setEditandoId(null); }}>
-          Cancelar
-        </button>
-      )}
-    </div>
+  <div className="form-grid">
+  <input name="idProducto" placeholder="ID Producto" onChange={handleChange} value={form.idProducto} required />
+  <input name="nombreProducto" placeholder="Nombre del producto" onChange={handleChange} value={form.nombreProducto} required />
+  <input type="date" name="fechaCosecha" onChange={handleChange} value={form.fechaCosecha} required />
+  <select name="estado" onChange={handleChange} value={form.estado}>
+  <option>Disponible</option>
+  <option>Agotado</option>
+  <option>En proceso</option>
+  </select>
+  </div>
+  <div className="form-actions">
+  <button type="submit" className="btn-save">
+  {editandoId ? "Actualizar Producto" : "Agregar al Inventario"}
+  </button>
+  {editandoId && (
+  <button type="button" className="btn-cancel" onClick={() => { limpiarFormulario(); setEditandoId(null); }}>
+  Cancelar
+  </button>
+  )}
+ </div>
   </form>
 
-  <div className="table-wrapper">
-    <table className="inventario-table">
-      <thead>
-        <tr>
-          <th>ID Producto</th>
-          <th>Nombre del Producto</th>
-          <th>Fecha de Cosecha</th>
-          <th>Estado</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        {inventarios.map((item) => (
-          <tr key={item._id}>
-            <td><strong>#{item.idProducto}</strong></td>
-            <td>{item.nombreProducto}</td>
-            <td>{item.fechaCosecha.split("T")[0]}</td>
-            <td>
-              <span className={`badge ${item.estado.toLowerCase().replace(" ", "-")}`}>
-                {item.estado}
-              </span>
-            </td>
-            <td className="actions-cell">
-              <button className="btn-edit" onClick={() => editar(item)}>Editar</button>
-              <button className="btn-delete" onClick={() => eliminar(item._id)}>Eliminar</button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
+<div className="table-wrapper">
+<table className="inventario-table">
+<thead>
+<tr>
+<th>ID Producto</th>
+<th>Nombre del Producto</th>
+<th>Fecha de Cosecha</th>
+<th>Estado</th>
+<th>Acciones</th>
+</tr>
+</thead>
+<tbody>
+{inventarios.map((item) => (
+<tr key={item._id}>
+<td><strong>#{item.idProducto}</strong></td>
+<td>{item.nombreProducto}</td>
+<td>{item.fechaCosecha.split("T")[0]}</td>
+<td>
+<span className={`badge ${item.estado.toLowerCase().replace(" ", "-")}`}>
+{item.estado}
+</span>
+</td>
+<td className="actions-cell">
+<button className="btn-edit" onClick={() => editar(item)}>Editar</button>
+<button className="btn-delete" onClick={() => eliminar(item._id)}>Eliminar</button>
+</td>
+</tr>
+))}
+</tbody>
+</table>
+</div>
 </div>
   );
 };

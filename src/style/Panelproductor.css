@@ -41,7 +41,7 @@ body {
 }
 
 .menu .active {
-  background: #e3f186;
+  background: #1d6418;
   color: white;
 }
 
@@ -72,12 +72,12 @@ body {
 }
 
 .filtros .activo {
-  background: #9fe462;
+  background: #1d6418;
   color: rgb(236, 240, 237);
   font-weight: bold;
 }
 
-.cards {
+.cardsproductor {
   display: grid;
   grid-template-columns: repeat(4,1fr);
   gap: 15px;
@@ -85,24 +85,25 @@ body {
 }
 
 .card {
-  color: #141212;
+  color: #1f1d1d;
   padding: 20px;
   border-radius: 15px;
   font-size: 18px;
   font-weight: bold;
   align-items: center;
 }
-
-.green { background: #9fe462; }
-.blue { background: #3f6095; }
-.purple { background: #8e71a9; }
-.orange { background: #836652; }
+.green { background: #c4eaa2; }
+.blue { background: #9cb4dc; }
+.purple { background: #d3b6ef; }
+.orange { background: #e0bea7; }
 
 .box {
   background: rgb(246, 242, 242);
   margin: 20px;
   padding: 15px;
   border-radius: 15px;
+  border: 1px solid black;
+  
 }
 
 table {
@@ -297,10 +298,10 @@ td {
 
 /* BOTÓN CANCELAR */
 .acciones button:last-child {
-  background: #fee2e2;
+  background: #f5f8f6;
   color: #b91c1c;
 }
 
 .acciones button:last-child:hover {
-  background: #fecaca;
+  background: #bae5cf;
 }

@@ -65,7 +65,7 @@ const PanelComprador = () => {
           </p>
         ) : (
           productosFiltrados.map((prod, index) => (
-            <div className="card" key={index}>
+            <div className="card2" key={index}>
               <img src={prod.imagen} alt={prod.nombre} />
 
               <div className="card-body">
