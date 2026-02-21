@@ -1,7 +1,7 @@
 // Notificaciones.js
 import React, { useState } from "react";
 import axios from "axios";
-import "./Notificaciones.css"; // ¡No olvides importar el CSS!
+import "../style/Notificaciones.css"; 
 
 const Notificaciones = () => {
   const [form, setForm] = useState({

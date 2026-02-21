@@ -1,10 +1,10 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Login from "./Login";
-import Register from "./Register";
-import Home from "./Home";
-import Pantallaprincipal from "./Panelproductor";
-import PantallaComprador from "./Panelcomprador";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Home from "./components/Home";
+import Pantallaprincipal from "./components/Panelproductor";
+import PantallaComprador from "./components/Panelcomprador";
 
 
 function App() {

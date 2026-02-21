@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import "./Panelproductor.css";
+import "../style/Panelproductor.css";
 import { useNavigate } from "react-router-dom";
-import Inventario from "./Inventario";
-import Notificaciones from "./Notificaciones"
+import Inventario from "../pages/Inventario";
+import Notificaciones from "../pages/Notificaciones"
 
 const PanelProductor = () => {
   const [filtro, setFiltro] = useState("semana");

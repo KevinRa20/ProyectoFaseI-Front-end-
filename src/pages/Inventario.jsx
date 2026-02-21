@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./Inventario.css"
+import "../style/Inventario.css"
 
 const API_URL = "http://localhost:5000/api/inventario";
 
