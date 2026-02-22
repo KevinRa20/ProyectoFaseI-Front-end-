@@ -15,6 +15,7 @@ const PanelProductor = () => {
     nombre: "",
     descripcion: "",
     categoria: "Hortalizas",
+    region:"Noroccidental",
     unidad: "kg",
     precio: "",
     stock: "",
@@ -72,6 +73,7 @@ const editarProducto = (index) => {
     nombre: "",
     descripcion: "",
     categoria: "Hortalizas",
+    region:"Noroccidental",
     unidad: "kg",
     precio: "",
     stock: "",
@@ -88,7 +90,8 @@ const editarProducto = (index) => {
 <h1>Agro Commerce</h1>
 <h2>Bienvenido, Has ingresado como productor</h2>
 </div>
-<button className="logout" onClick={() => navigate("/login")}>Salir</button>
+<button className="logout"onClick={() => navigate("/login")}>Salir</button>
+<img className="icono-perfil"src="https://cdn-icons-png.flaticon.com/128/2550/2550260.png" alt="icono-perfil" />
 </header>
 <nav className="menu">
 <button className="active"onClick={() => navigate("/panelproductor")}>Análisis de Ventas</button>
@@ -102,11 +105,11 @@ const editarProducto = (index) => {
 {mostrarForm && (
 <div className="modal">
 <div className="formulario">
-<h2>Nuevo Producto</h2>
+<h2>Nuevo Producto o Cosecha</h2>
 
 <input name="nombre" placeholder="Nombre del Producto" value={nuevoProducto.nombre} onChange={handleChange} />
 <textarea name="descripcion" placeholder="Descripción" value={nuevoProducto.descripcion} onChange={handleChange}></textarea>
-<select name="categoria" value={nuevoProducto.categoria} onChange={handleChange}>
+<select name="categoria" placeholder="Categoria" value={nuevoProducto.categoria} onChange={handleChange}>
 <option>Hortalizas</option>
 <option>Frutas</option>
 <option>Verduras</option>
@@ -124,6 +127,14 @@ const editarProducto = (index) => {
 <option>Libra</option>
 </select>
 
+<select name="region" value={nuevoProducto.region} onChange={handleChange}>
+<option>Occidental</option>
+<option>Noroccidental</option>
+<option>Nororiental</option>
+<option>Centro Occidental</option>
+<option>Centro Oriental</option>
+<option>Centro Sur</option>
+</select>
 <input name="precio" type="number" placeholder="Precio" value={nuevoProducto.precio} onChange={handleChange} />
 <input name="stock" type="number" placeholder="Stock" value={nuevoProducto.stock} onChange={handleChange} />
 <input type="file" accept="image/*" onChange={handleImage} />

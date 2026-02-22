@@ -4,10 +4,15 @@ import { useNavigate } from "react-router-dom";
 
 const PanelComprador = () => {
   const [categoria, setCategoria] = useState("Todas");
+  const [region, setRegion] = useState("Todas");
+  const [precioMax, setPrecioMax] = useState("Todos");
   const [productos, setProductos] = useState([]);
+
   const navigate = useNavigate();
 
-  const categorias = ["Todas", "Hortalizas", "Frutas", "Verduras","Cereales", "Lácteos", "Raíces", "Industriales", "Leguminosas", "Otros"];
+  const categorias = ["Todas", "Hortalizas", "Frutas", "Verduras", "Cereales", "Lácteos", "Raíces", "Industriales", "Leguminosas", "Otros"];
+  const regiones = ["Todas", "Occidental", "Noroccidental", "Nororiental", "Centro Occidental", "Centro Oriental", "Sur"];
+  const precios = ["Todos", 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 
   // Cargar productos del productor
   useEffect(() => {
@@ -15,53 +20,66 @@ const PanelComprador = () => {
     setProductos(data);
   }, []);
 
-  // Filtrar por categoría
-  const productosFiltrados =
-    categoria === "Todas"
-      ? productos
-      : productos.filter(p => p.categoria === categoria);
+  //  FILTRO COMBINADO
+    const productosFiltrados = productos.filter((p) => {
+    const cumpleCategoria = categoria === "Todas" || p.categoria === categoria;
+    const cumpleRegion = region === "Todas" || p.region === region;
+    const cumplePrecio = precioMax === "Todos" || Number(p.precio) <= Number(precioMax);
 
-  return (
-    <div className="panel-comprador">
+    return cumpleCategoria && cumpleRegion && cumplePrecio;
+  });
 
-  {/* HEADER */}
-  <header className="header">
-  <div>
-  <h1>Agro Commerce</h1>
-  <h2>Bienvenido, Has ingresado como comprador</h2>
-  </div>
+return (
+<div className="panel-comprador">
+
+{/* HEADER */}
+<header className="header">
+<div>
+<h1>Agro Commerce</h1>
+<h2>Bienvenido, Has ingresado como comprador</h2>
+</div>
 <div className="icons">
 <img src="https://cdn-icons-png.flaticon.com/128/3239/3239952.png" alt="notificaciones" />
 <img src="https://cdn-icons-png.flaticon.com/128/15598/15598573.png" alt="carrito" />
-<button className="logout" onClick={() => navigate("/login")}>Salir</button>
+<button className="logout1" onClick={() => navigate("/login")}>Salir</button>
 </div>
 </header>
 
-{/* BUSCADOR Y CATEGORÍAS */}
-<section className="search-bar">
+ <section className="search-bar">
 <div className="search-input">
-          🔍
-          <input type="text" placeholder="Buscar productos, productores o filtros" />
-        </div>
+🔍
+<input type="text" placeholder="Buscar productos" />
+</div>
 
-        <div className="categories">
-          {categorias.map(cat => (
-            <button
-              key={cat}
-              className={categoria === cat ? "active" : ""}
-              onClick={() => setCategoria(cat)}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-      </section>
+<div className="filters">
+<select value={categoria} onChange={(e) => setCategoria(e.target.value)}>
+{categorias.map(cat => (
+<option key={cat} value={cat}>{cat}</option>
+))}
+</select>
 
-      {/* PRODUCTOS */}
-      <section className="products">
-        {productosFiltrados.length === 0 ? (
-          <p style={{ textAlign: "center", width: "100%" }}>
-            No hay productos disponibles
+<select value={region} onChange={(e) => setRegion(e.target.value)}>
+{regiones.map(reg => (
+<option key={reg} value={reg}>{reg}</option>
+))}
+</select>
+
+<select value={precioMax} onChange={(e) => setPrecioMax(e.target.value)}>
+{precios.map(p => (
+<option key={p} value={p}>
+{p === "Todos" ? "Todos los precios" : `Hasta L.${p}`}
+</option>
+))}
+</select>
+  </div>
+</section>
+      
+
+{/* PRODUCTOS */}
+ <section className="products">
+{productosFiltrados.length === 0 ? (
+<p style={{ textAlign: "center", width: "100%" }}>
+No hay productos con esos filtros
           </p>
         ) : (
           productosFiltrados.map((prod, index) => (
@@ -72,8 +90,9 @@ const PanelComprador = () => {
                 <div className="info">
                   <h2>{prod.nombre}</h2>
                   <span className="category">{prod.categoria}</span>
+                  <p><strong>Región:</strong> {prod.region}</p>
                   <p>{prod.descripcion}</p>
-                  <div className="price">L{prod.precio}/{prod.unidad}</div>
+                  <div className="price">L.{prod.precio}/{prod.unidad}</div>
                 </div>
 
                 <div className="actions">

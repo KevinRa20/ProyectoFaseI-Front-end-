@@ -1,46 +1,52 @@
+/* Importación de fuente moderna */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
 :root {
-  --primary-green: #2ecc71;
-  --dark-green: #27ae60;
-  --bg-color: #f8fafc;
-  --text-main: #2d3436;
-  --text-light: #636e72;
+  --primary: #059669; /* Verde esmeralda fresco */
+  --primary-hover: #047857;
+  --bg-body: #f8fafc;
   --white: #ffffff;
-  --shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --accent: #fbbf24; /* Amarillo miel para ratings/destacados */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+  --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.1);
+  --radius: 16px;
 }
 
 .panel-comprador {
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: var(--bg-color);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--bg-body);
   min-height: 100vh;
-  padding: 20px;
   color: var(--text-main);
 }
 
-/* --- HEADER --- */
+/* HEADER ESTILO E-COMMERCE */
 .header {
+  background: var(--white);
+  padding: 1rem 5%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 40px;
-  background: var(--white);
-  border-radius: 20px;
-  box-shadow: var(--shadow);
-  margin-bottom: 30px;
-  animation: slideDown 0.6s ease-out;
+  border-bottom: 1px solid #e2e8f0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .header h1 {
+  font-size: 1.5rem;
+  color: var(--primary);
   margin: 0;
-  font-size: 1.8rem;
-  color: var(--dark-green);
   font-weight: 800;
 }
 
-.header p {
+.header h2 {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 400;
   margin: 0;
-  color: var(--text-light);
-  font-size: 0.9rem;
+  text-align: center;
 }
 
 .icons {
@@ -50,204 +56,194 @@
 }
 
 .icons img {
-  width: 28px;
+  width: 24px;
+  height: 24px;
   cursor: pointer;
-  transition: var(--transition);
+  transition: transform 0.2s;
+  filter: opacity(0.7);
 }
 
 .icons img:hover {
-  transform: translateY(-3px) scale(1.1);
+  transform: scale(1.1);
+  filter: opacity(1);
 }
 
-.logout {
-  background: #ff7675;
-  color: white;
+.logout1 {
+  background: #f1f5f9;
   border: none;
-  padding: 8px 20px;
-  border-radius: 12px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: var(--text-main);
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition);
+  transition: 0.3s;
 }
 
-.logout:hover {
-  background: #d63031;
-  box-shadow: 0 4px 12px rgba(214, 48, 49, 0.3);
+.logout1:hover {
+  background: #fee2e2;
+  color: #ef4444;
 }
 
-/* --- SEARCH & CATEGORIES --- */
+/* BARRA DE BÚSQUEDA Y FILTROS */
 .search-bar {
-  max-width: 1200px;
-  margin: 0 auto 40px;
+  padding: 2rem 5%;
+  background: var(--white);
   display: flex;
   flex-direction: column;
   gap: 20px;
-  animation: fadeIn 0.8s ease-in;
+  box-shadow: var(--shadow-sm);
 }
 
 .search-input {
+  position: relative;
   display: flex;
   align-items: center;
-  background: var(--white);
-  padding: 12px 25px;
-  border-radius: 50px;
-  box-shadow: var(--shadow);
-  border: 2px solid transparent;
-  transition: var(--transition);
-}
-
-.search-input:focus-within {
-  border-color: var(--primary-green);
+  background: #f1f5f9;
+  padding: 0 15px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
 }
 
 .search-input input {
-  border: none;
-  outline: none;
   width: 100%;
-  margin-left: 15px;
+  padding: 12px;
+  border: none;
+  background: transparent;
+  outline: none;
   font-size: 1rem;
 }
 
-.categories {
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  padding: 10px 5px;
-  scrollbar-width: none;
+.filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
 }
 
-.categories::-webkit-scrollbar { display: none; }
-
-.categories button {
-  padding: 10px 24px;
-  border: none;
-  background: var(--dark-green);
-  border-radius: 50px;
+.filters select {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background: var(--white);
+  color: var(--text-main);
   cursor: pointer;
-  white-space: nowrap;
   font-weight: 500;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-  transition: var(--transition);
 }
 
-.categories button.active {
-  background: var(--primary-green);
-  color: rgb(245, 239, 239);
-  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
-}
-
-.categories button:hover:not(.active) {
-  background: #151313;
-  transform: translateY(-2px);
-}
-
-/* --- PRODUCT CARDS --- */
+/* GRID DE PRODUCTOS */
 .products {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 30px;
-  max-width: 1200px;
-  margin: 0 auto;
+  padding: 2rem 5%;
 }
 
 .card2 {
   background: var(--white);
-  border-radius: 25px;
+  border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: var(--shadow);
-  transition: var(--transition);
-  animation: cardEntrance 0.6s ease-out backwards;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
 }
 
-.card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+.card2:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-md);
 }
 
-.card img {
+.card2 img {
   width: 100%;
   height: 200px;
   object-fit: cover;
-  transition: var(--transition);
+  transition: 0.5s;
 }
 
-.card:hover img {
+.card2:hover img {
   transform: scale(1.05);
 }
 
 .card-body {
   padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.info h2 {
+  font-size: 1.25rem;
+  margin: 0 0 8px 0;
+  color: var(--text-main);
 }
 
 .category {
+  display: inline-block;
+  background: #ecfdf5;
+  color: var(--primary);
   font-size: 0.75rem;
-  text-transform: uppercase;
-  color: var(--primary-green);
   font-weight: 700;
-  letter-spacing: 1px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
 }
 
-.card h2 {
-  margin: 8px 0;
-  font-size: 1.25rem;
-}
-
-.card p {
-  color: var(--text-light);
+.info p {
   font-size: 0.9rem;
-  line-height: 1.4;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 10px 0;
 }
 
 .price {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 800;
-  color: var(--text-main);
-  margin-top: 15px;
+  color: var(--primary);
+  margin-top: 10px;
 }
 
+/* BOTÓN AGREGAR Y STOCK */
 .actions {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   margin-top: 20px;
   padding-top: 15px;
-  border-top: 1px solid #eee;
+  border-top: 1px solid #f1f5f9;
 }
 
 .stock {
   font-size: 0.85rem;
-  color: var(--text-light);
-  font-weight: 500;
+  font-weight: 600;
+  color: var(--text-muted);
 }
 
 .actions button {
-  background: var(--primary-green);
+  background: var(--primary);
   color: white;
   border: none;
   padding: 10px 20px;
-  border-radius: 12px;
-  font-weight: 600;
+  border-radius: 10px;
+  font-weight: 700;
   cursor: pointer;
-  transition: var(--transition);
+  transition: 0.2s;
 }
 
 .actions button:hover {
-  background: var(--dark-green);
-  transform: scale(1.05);
+  background: var(--primary-hover);
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
 }
 
-/* --- ANIMATIONS --- */
-@keyframes slideDown {
-  from { transform: translateY(-50px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes cardEntrance {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .search-bar {
+    padding: 1rem;
+  }
 }
