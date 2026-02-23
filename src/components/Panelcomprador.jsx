@@ -80,32 +80,31 @@ return (
 {productosFiltrados.length === 0 ? (
 <p style={{ textAlign: "center", width: "100%" }}>
 No hay productos con esos filtros
-          </p>
-        ) : (
-          productosFiltrados.map((prod, index) => (
-            <div className="card2" key={index}>
-              <img src={prod.imagen} alt={prod.nombre} />
-
-              <div className="card-body">
-                <div className="info">
-                  <h2>{prod.nombre}</h2>
-                  <span className="category">{prod.categoria}</span>
-                  <p><strong>Región:</strong> {prod.region}</p>
-                  <p>{prod.descripcion}</p>
-                  <div className="price">L.{prod.precio}/{prod.unidad}</div>
-                </div>
-
-                <div className="actions">
-                  <span className="stock">{prod.stock} {prod.unidad}</span>
-                  <button>Agregar</button>
-                </div>
-              </div>
-            </div>
-          ))
-        )}
-      </section>
-
-    </div>
+</p>
+) : (
+productosFiltrados.map((prod, index) => (
+<div className="card2" key={index}>
+<img src={prod.imagen} alt={prod.nombre} />
+<div className="card-body">
+<div className="info">
+<h2>{prod.nombre}</h2>
+<span className="category">{prod.categoria}</span>
+<p><strong>Región:</strong> {prod.region}</p>
+<p>{prod.descripcion}</p>
+<p><strong>Finca:</strong> {prod.finca}</p>
+<p><strong>Ubicación:</strong> {prod.ubicacion}</p>
+<p><strong>Nombre del Productor:</strong> {prod.productor}</p>
+<div className="price">L.{prod.precio}/{prod.unidad}</div>
+</div>
+<div className="actions">
+<span className="stock">{prod.stock} {prod.unidad}</span>
+<button>Agregar</button>
+</div>
+</div>
+</div>
+)) )}
+</section>
+</div>
   );
 };
 

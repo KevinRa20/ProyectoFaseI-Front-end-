@@ -10,7 +10,19 @@ const PanelProductor = () => {
   const [mostrarForm, setMostrarForm] = useState(false);
   const [productos, setProductos] = useState([]);
   const navigate = useNavigate();
+  const [mostrarPerfil, setMostrarPerfil] = useState(false);
 
+const [perfil, setPerfil] = useState({
+  productor:"",
+  finca: "",
+  ubicacion: "",
+  telefono: "",
+  email: "",
+  tamano: "",
+  año: "",
+  descripcion: "",
+  imagen: ""
+});
   const [nuevoProducto, setNuevoProducto] = useState({
     nombre: "",
     descripcion: "",
@@ -49,31 +61,58 @@ const editarProducto = (index) => {
       [e.target.name]: e.target.value
     });
   };
+  useEffect(() => {
+  const data = JSON.parse(localStorage.getItem("perfilProductor"));
+  if (data) setPerfil(data);
+}, []);
 
+ useEffect(() => {
+  localStorage.setItem("perfilProductor", JSON.stringify(perfil));
+}, [perfil]);
   const handleImage = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setNuevoProducto({ ...nuevoProducto, imagen: reader.result });
+  const file = e.target.files[0];
+  const reader = new FileReader();
+  reader.onloadend = () => {
+  setNuevoProducto({ ...nuevoProducto, imagen: reader.result });
     };
     reader.readAsDataURL(file);
   };
+ const handlePerfilChange = (e) => {
+  setPerfil({ ...perfil, [e.target.name]: e.target.value });
+};
 
+const handlePerfilImage = (e) => {
+  const file = e.target.files[0];
+  const reader = new FileReader();
+  reader.onloadend = () => {
+    setPerfil({ ...perfil, imagen: reader.result });
+  };
+  reader.readAsDataURL(file);
+};
   const agregarProducto = () => {
+  const productoConPerfil = {
+    ...nuevoProducto,
+    vendido: 0,
+    ingresos: 0,
+    finca: perfil.finca,
+    productor: perfil.productor, 
+    ubicacion: perfil.ubicacion
+  };
+
   if (editandoIndex !== null) {
     const copia = [...productos];
-    copia[editandoIndex] = nuevoProducto;
+    copia[editandoIndex] = productoConPerfil;
     setProductos(copia);
     setEditandoIndex(null);
   } else {
-    setProductos([...productos, { ...nuevoProducto, vendido: 0, ingresos: 0 }]);
+    setProductos([...productos, productoConPerfil]);
   }
 
   setNuevoProducto({
     nombre: "",
     descripcion: "",
     categoria: "Hortalizas",
-    region:"Noroccidental",
+    region: "Noroccidental",
     unidad: "kg",
     precio: "",
     stock: "",
@@ -91,7 +130,14 @@ const editarProducto = (index) => {
 <h2>Bienvenido, Has ingresado como productor</h2>
 </div>
 <button className="logout"onClick={() => navigate("/login")}>Salir</button>
-<img className="icono-perfil"src="https://cdn-icons-png.flaticon.com/128/2550/2550260.png" alt="icono-perfil" />
+<img
+  className="icono-perfil"
+  src={perfil.imagen || "https://cdn-icons-png.flaticon.com/128/2550/2550260.png"}
+  alt="perfil"
+  onClick={() => setMostrarPerfil(true)}
+  style={{ cursor: "pointer" }}
+/>
+<img className="icono-mensajes"src="https://cdn-icons-png.flaticon.com/128/876/876221.png" alt="icono-mensajes" />
 </header>
 <nav className="menu">
 <button className="active"onClick={() => navigate("/panelproductor")}>Análisis de Ventas</button>
@@ -102,14 +148,37 @@ const editarProducto = (index) => {
 {vista === "inventario" && <Inventario />}
 {vista === "notificaciones" && <Notificaciones/>}
 {/* FORMULARIO */}
+{mostrarPerfil && (
+<div className="modal">
+<div className="formulario perfil-form">
+<h2>Completa Tu Perfil</h2>
+<input name="productor" placeholder="Nombre completo" value={perfil.productor} onChange={handlePerfilChange} />
+<input name="finca" placeholder="Nombre de la Finca" value={perfil.finca} onChange={handlePerfilChange} />
+<input name="ubicacion" placeholder="Ubicación" value={perfil.ubicacion} onChange={handlePerfilChange} />
+<input name="telefono" placeholder="Teléfono" value={perfil.telefono} onChange={handlePerfilChange} />
+<input name="email" placeholder="Email" value={perfil.email} onChange={handlePerfilChange} />
+<input name="tamano" placeholder="Tamaño de la finca (ej: 50 ha)" value={perfil.tamano} onChange={handlePerfilChange} />
+<input name="año" placeholder="Año de establecimiento" value={perfil.año} onChange={handlePerfilChange} />
+<textarea name="descripcion" placeholder="Describe tu finca" value={perfil.descripcion} onChange={handlePerfilChange}></textarea>
+
+ <input type="file" accept="image/*" onChange={handlePerfilImage} />
+
+<div className="acciones">
+<button onClick={() => setMostrarPerfil(false)}>Guardar</button>
+<button onClick={() => setMostrarPerfil(false)}>Cerrar</button>
+</div>
+</div>
+</div>
+)}
 {mostrarForm && (
 <div className="modal">
 <div className="formulario">
 <h2>Nuevo Producto o Cosecha</h2>
 
 <input name="nombre" placeholder="Nombre del Producto" value={nuevoProducto.nombre} onChange={handleChange} />
-<textarea name="descripcion" placeholder="Descripción" value={nuevoProducto.descripcion} onChange={handleChange}></textarea>
+<textarea name="descripcion" placeholder="Descripción de tu producto y desde donde lo vendes" value={nuevoProducto.descripcion} onChange={handleChange}></textarea>
 <select name="categoria" placeholder="Categoria" value={nuevoProducto.categoria} onChange={handleChange}>
+<option>Seleccione la categoria</option>
 <option>Hortalizas</option>
 <option>Frutas</option>
 <option>Verduras</option>
@@ -121,6 +190,7 @@ const editarProducto = (index) => {
 </select>
 
 <select name="unidad" value={nuevoProducto.unidad} onChange={handleChange}>
+<option>Seleccione el tipo de venta</option>
 <option>Kg</option>
 <option>Caja o Saco</option>
 <option>Unidad</option>
@@ -128,6 +198,7 @@ const editarProducto = (index) => {
 </select>
 
 <select name="region" value={nuevoProducto.region} onChange={handleChange}>
+<option>Seleccione la Region</option>
 <option>Occidental</option>
 <option>Noroccidental</option>
 <option>Nororiental</option>

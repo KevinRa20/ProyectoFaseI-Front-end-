@@ -38,6 +38,7 @@
   margin: 0;
   font-weight: 700;
   letter-spacing: -0.5px;
+  text-align: left;
 }
 
 .header h2 {
@@ -45,7 +46,7 @@
   font-weight: 300;
   opacity: 0.9;
   margin-top: 5px;
-  text-align: center;
+  text-align:right;
 }
 
 /* NAVEGACIÓN */
@@ -130,7 +131,7 @@
 }
 .icono-perfil {
   width: 42px;
-  height: 42px;
+  height: 35px;
   border-radius: 50%;
   border: 2px solid rgba(255, 255, 255, 0.5); /* Borde suave */
   padding: 2px;
@@ -146,6 +147,28 @@
   transform: scale(1.1) rotate(5deg);
   border-color: var(--primary); /* Cambia al color principal que definimos antes */
   background-color: white;
+}
+.icono-mensajes{
+  width: 42px;
+  height: 30px;
+  border-radius: 20%;
+  padding: 2px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  vertical-align: middle;
+ 
+}
+.perfil-form input,
+.perfil-form textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.icono-perfil {
+  width: 40px;
+  border-radius: 50%;
 }
 .box h2 {
   font-size: 1.25rem;
