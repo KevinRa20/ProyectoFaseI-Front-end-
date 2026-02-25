@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import "../style/Panelcomprador.css";
 import { useNavigate } from "react-router-dom";
+import Chat from "../pages/Chat";
 
 const PanelComprador = () => {
   const [categoria, setCategoria] = useState("Todas");
   const [region, setRegion] = useState("Todas");
   const [precioMax, setPrecioMax] = useState("Todos");
   const [productos, setProductos] = useState([]);
+  const [vista, setVista] = useState("productos"); 
+
 
   const navigate = useNavigate();
-
+  const usuario = "comprador";
   const categorias = ["Todas", "Hortalizas", "Frutas", "Verduras", "Cereales", "Lácteos", "Raíces", "Industriales", "Leguminosas", "Otros"];
   const regiones = ["Todas", "Occidental", "Noroccidental", "Nororiental", "Centro Occidental", "Centro Oriental", "Sur"];
   const precios = ["Todos", 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
@@ -39,6 +42,11 @@ return (
 <h2>Bienvenido, Has ingresado como comprador</h2>
 </div>
 <div className="icons">
+<img
+  className="icono-mensajes"
+  src="https://cdn-icons-png.flaticon.com/128/876/876221.png"
+  alt="icono-mensajes"
+  onClick={() => setVista("chat")}/>
 <img src="https://cdn-icons-png.flaticon.com/128/3239/3239952.png" alt="notificaciones" />
 <img src="https://cdn-icons-png.flaticon.com/128/15598/15598573.png" alt="carrito" />
 <button className="logout1" onClick={() => navigate("/login")}>Salir</button>
@@ -73,7 +81,10 @@ return (
 </select>
   </div>
 </section>
-      
+  {/* CHAT */}
+  {vista === "chat" && (
+  <Chat usuario={usuario} volver={() => setVista("productos")} />)}
+  
 
 {/* PRODUCTOS */}
  <section className="products">

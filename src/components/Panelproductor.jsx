@@ -3,6 +3,7 @@ import "../style/Panelproductor.css";
 import { useNavigate } from "react-router-dom";
 import Inventario from "../pages/Inventario";
 import Notificaciones from "../pages/Notificaciones"
+import Chat from "../pages/Chat";
 
 const PanelProductor = () => {
   const [vista, setVista] = useState("inicio");
@@ -11,6 +12,8 @@ const PanelProductor = () => {
   const [productos, setProductos] = useState([]);
   const navigate = useNavigate();
   const [mostrarPerfil, setMostrarPerfil] = useState(false);
+
+const usuario = "productor"; 
 
 const [perfil, setPerfil] = useState({
   productor:"",
@@ -137,7 +140,12 @@ const handlePerfilImage = (e) => {
   onClick={() => setMostrarPerfil(true)}
   style={{ cursor: "pointer" }}
 />
-<img className="icono-mensajes"src="https://cdn-icons-png.flaticon.com/128/876/876221.png" alt="icono-mensajes" />
+<img
+  className="icono-mensajes"
+  src="https://cdn-icons-png.flaticon.com/128/876/876221.png"
+  alt="icono-mensajes"
+  onClick={() => setVista("chat")}
+/>
 </header>
 <nav className="menu">
 <button className="active"onClick={() => navigate("/panelproductor")}>Análisis de Ventas</button>
@@ -147,6 +155,7 @@ const handlePerfilImage = (e) => {
 </nav>
 {vista === "inventario" && <Inventario />}
 {vista === "notificaciones" && <Notificaciones/>}
+{vista === "chat" && <Chat usuario={usuario} />}
 {/* FORMULARIO */}
 {mostrarPerfil && (
 <div className="modal">
