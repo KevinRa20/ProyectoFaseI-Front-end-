@@ -73,7 +73,7 @@ const Inventario = () => {
   };
   
   return (
-    // ... dentro del return de Inventario.js
+  
 <div className="inventario-container">
   <div className="inventario-header">
     <h2>Registro de Inventario</h2>

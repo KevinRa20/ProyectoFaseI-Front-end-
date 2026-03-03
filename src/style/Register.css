@@ -1,137 +1,108 @@
-/* Importación de una fuente moderna */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
-
-:root {
-  --primary-color: #4f46e5;
-  --primary-hover: #4338ca;
-  --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #37be40 100%);
-  --text-main: #1f2937;
-  --text-muted: #3c833c;
-  --white: #ffffff;
-  --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
 }
 
 .register-container {
   min-height: 100vh;
+  background: linear-gradient(135deg, #33691e, #aed581);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-gradient);
-  font-family: 'Inter', sans-serif;
-  padding: 20px;
 }
 
 .register-card {
-  background: var(--white);
+  background: #ffffff;
   padding: 2.5rem;
-  border-radius: 16px;
-  box-shadow: var(--shadow);
   width: 100%;
-  max-width: 450px;
+  max-width: 420px;
+  border-radius: 18px;
+  box-shadow: 0px 12px 28px rgba(0, 0, 0, 0.18);
   text-align: center;
-  transition: transform 0.3s ease;
-}
-
-/* Efecto sutil al pasar el mouse por la tarjeta */
-.register-card:hover {
-  transform: translateY(-5px);
+  animation: fadeIn 0.8s ease;
 }
 
 .icono-registro {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 1.5rem;
-  /* Animación de entrada */
-  animation: bounceIn 0.8s ease;
+  width: 85px;
+  margin-bottom: 10px;
 }
 
 h2 {
-  color: var(--text-main);
-  font-weight: 600;
-  margin-bottom: 2rem;
-  font-size: 1.75rem;
+  color: #33691e;
+  margin-bottom: 1.5rem;
 }
 
 .form-group {
   text-align: left;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
 }
 
-.form-group label {
+label {
   display: block;
-  font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-main);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem;
+  color: #444;
 }
 
-.form-group input,
-.form-group select {
+input,
+select {
   width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 1rem;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 0.95rem;
   transition: all 0.3s ease;
-  box-sizing: border-box; /* Asegura que el padding no rompa el ancho */
 }
 
-/* Efecto dinámico en los inputs */
-.form-group input:focus,
-.form-group select:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+input:focus,
+select:focus {
+  border-color: #689f38;
+  box-shadow: 0 0 6px rgba(104, 159, 56, 0.4);
 }
 
 .btn-completeprofile {
   width: 100%;
-  background-color: var(--primary-color);
-  color: white;
-  padding: 0.85rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.1s active;
   margin-top: 1rem;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #558b2f, #7cb342);
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-completeprofile:hover {
-  background-color: var(--primary-hover);
-}
-
-.btn-completeprofile:active {
-  transform: scale(0.98);
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 p {
-  margin-top: 1.5rem;
-  color: var(--text-muted);
+  margin-top: 1rem;
   font-size: 0.9rem;
+  color: #555;
 }
 
-p a {
-  color: var(--primary-color);
+a {
+  color: #33691e;
+  font-weight: bold;
   text-decoration: none;
-  font-weight: 600;
 }
 
-p a:hover {
+a:hover {
   text-decoration: underline;
 }
 
-/* Animaciones */
-@keyframes bounceIn {
-  0% { opacity: 0; transform: scale(0.3); }
-  50% { opacity: 1; transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-/* Responsive */
-@media (max-width: 480px) {
-  .register-card {
-    padding: 1.5rem;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

@@ -29,9 +29,9 @@ const [perfil, setPerfil] = useState({
   const [nuevoProducto, setNuevoProducto] = useState({
     nombre: "",
     descripcion: "",
-    categoria: "Hortalizas",
-    region:"Noroccidental",
-    unidad: "kg",
+    categoria: "",
+    region:"",
+    unidad: "",
     precio: "",
     stock: "",
     imagen: ""
@@ -114,9 +114,9 @@ const handlePerfilImage = (e) => {
   setNuevoProducto({
     nombre: "",
     descripcion: "",
-    categoria: "Hortalizas",
-    region: "Noroccidental",
-    unidad: "kg",
+    categoria: "",
+    region: "",
+    unidad: "",
     precio: "",
     stock: "",
     imagen: ""
@@ -146,6 +146,10 @@ const handlePerfilImage = (e) => {
   alt="icono-mensajes"
   onClick={() => setVista("chat")}
 />
+<img
+className="icono-notificaciones"
+src="https://cdn-icons-png.flaticon.com/128/3239/3239952.png"
+alt="icono-notificaciones"/>
 </header>
 <nav className="menu">
 <button className="active"onClick={() => navigate("/panelproductor")}>Análisis de Ventas</button>
@@ -178,6 +182,7 @@ const handlePerfilImage = (e) => {
 </div>
 </div>
 </div>
+    
 )}
 {mostrarForm && (
 <div className="modal">
@@ -208,12 +213,12 @@ const handlePerfilImage = (e) => {
 
 <select name="region" value={nuevoProducto.region} onChange={handleChange}>
 <option>Seleccione la Region</option>
-<option>Occidental</option>
-<option>Noroccidental</option>
-<option>Nororiental</option>
-<option>Centro Occidental</option>
-<option>Centro Oriental</option>
-<option>Centro Sur</option>
+<option>Región Occidental</option>
+<option>Región Noroccidental</option>
+<option>Región Nororiental</option>
+<option>Región Centro Occidental</option>
+<option>Región Centro Oriental</option>
+<option>Región Sur</option>
 </select>
 <input name="precio" type="number" placeholder="Precio" value={nuevoProducto.precio} onChange={handleChange} />
 <input name="stock" type="number" placeholder="Stock" value={nuevoProducto.stock} onChange={handleChange} />
@@ -227,7 +232,7 @@ const handlePerfilImage = (e) => {
 )}
 
 <section className="box">
-  <h2>Catálogo de Productos</h2>
+<h2>Catálogo de Productos</h2>
 
 <div className="catalogo">
 {productos.map((p, index) => (
@@ -291,7 +296,11 @@ L.{p.precio} / {p.unidad}
 <td>{p.categoria}</td>
 <td>{p.vendido}</td>
 <td>L.{p.ingresos}</td>
-<td>{p.stock} {p.unidad}</td>
+<td>
+<span className={`badge ${p.stock < 5 ? 'low-stock' : ''}`}>
+{p.stock} {p.unit}
+</span>
+</td>
 <td>⭐ N/A</td>
 </tr>
 ))}

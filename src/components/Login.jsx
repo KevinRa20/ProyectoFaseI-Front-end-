@@ -32,7 +32,7 @@ function Login() {
       body: JSON.stringify(form)
     });
 
-    const data = await res.json(); // SOLO UNA VEZ
+    const data = await res.json(); 
     alert(data.msg);
 
     if (res.ok) {
@@ -52,49 +52,45 @@ function Login() {
 };
 
   return (
-    <div className="register-container">
-      <div className="register-card">
-        <img
-          className="icono-registro"
-          src="https://cdn-icons-png.flaticon.com/128/747/747376.png"
-          alt="icono-login"
-        />
-        <h2>Login</h2>
+  <div className="register-container">
+  <div className="register-card">
+  <img className="icono-registro"
+   src="https://cdn-icons-png.flaticon.com/128/747/747376.png"
+   alt="icono-login"
+  />
+<h2>Login</h2>
+<form onSubmit={handleSubmit}>
+<div className="form-group">
+<label>Email</label>
+<input
+type="email"
+name="email"
+placeholder="Ingresa tu correo"
+value={form.email}
+onChange={handleChange}
+required
+/>
+</div>
+<div className="form-group">
+<label>Contraseña</label>
+<input
+type="password"
+name="password"
+placeholder="Ingresa tu contraseña"
+value={form.password}
+onChange={handleChange}
+required
+/>
+</div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Ingresa tu correo"
-              value={form.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Contraseña</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Ingresa tu contraseña"
-              value={form.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <button type="submit">Iniciar Sesión</button>
-        </form>
-
-        <p>
-          ¿No tienes cuenta? <Link to="/registro">Registrarse</Link>
-        </p>
-      </div>
-    </div>
-  );
+<button type="submit">Iniciar Sesión</button>
+</form>
+<p>
+ ¿No tienes cuenta? <Link to="/registro">Registrarse</Link>
+</p>
+</div>
+</div>
+);
 }
 
 export default Login;

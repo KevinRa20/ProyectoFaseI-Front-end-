@@ -3,95 +3,102 @@
   font-family: "Segoe UI", sans-serif;
 }
 
-.login-container {
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.register-container {
   min-height: 100vh;
-  background-color: #437047;
+  background: linear-gradient(135deg, #2e7d32, #81c784);
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.Icono-agricultor {
-  width: 60px;
-  height: 60px;
-  display: block;
-  margin: 0 auto 40px auto;
-}
 
-.login-card {
-  background: white;
-  padding: 40px;
-  border-radius: 15px;
+.register-card {
+  background: #ffffff;
+  padding: 2.5rem;
   width: 100%;
-  max-width: 400px;
-  box-shadow: 0px 15px 30px rgba(0,0,0,0.2);
-  animation: fadeIn 0.8s ease-in-out;
+  max-width: 380px;
+  border-radius: 18px;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  animation: fadeIn 0.8s ease;
 }
 
-.login-card h2 {
-  text-align: center;
-  margin-bottom: 25px;
-  color: #333;
+.icono-registro {
+  width: 80px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  color: #2e7d32;
+  margin-bottom: 1.5rem;
 }
 
 .form-group {
-  margin-bottom: 20px;
+  text-align: left;
+  margin-bottom: 1rem;
 }
 
-.form-group label {
+label {
   display: block;
-  margin-bottom: 6px;
   font-weight: 600;
-  color: #555;
+  margin-bottom: 0.3rem;
+  color: #444;
 }
 
-.form-group input {
+input {
   width: 100%;
   padding: 10px 12px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid #ccc;
   outline: none;
+  font-size: 0.95rem;
   transition: all 0.3s ease;
 }
 
-.form-group input:focus {
-  border-color: #093f06;
-  box-shadow: 0 0 5px rgba(15, 160, 42, 0.5);
+input:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.4);
 }
 
 button {
   width: 100%;
+  margin-top: 1rem;
   padding: 12px;
-  background: linear-gradient(135deg, #1d803b, #179242);
+  border-radius: 12px;
   border: none;
-  border-radius: 10px;
+  background: linear-gradient(135deg, #43a047, #66bb6a);
   color: white;
-  font-size: 16px;
+  font-weight: bold;
+  font-size: 1rem;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 button:hover {
   transform: translateY(-2px);
-  box-shadow: 0px 8px 15px rgba(0,0,0,0.2);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 p {
-  text-align: center;
-  margin-top: 20px;
-  color: #111412;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #555;
 }
 
-p a {
-  color: #245724;
-  text-decoration: none;
+a {
+  color: #2e7d32;
   font-weight: bold;
+  text-decoration: none;
 }
 
-p a:hover {
+a:hover {
   text-decoration: underline;
 }
 
-/* Animación */
 @keyframes fadeIn {
   from {
     opacity: 0;
