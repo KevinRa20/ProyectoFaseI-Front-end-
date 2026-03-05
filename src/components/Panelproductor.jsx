@@ -10,11 +10,12 @@ const PanelProductor = () => {
   const [editandoIndex, setEditandoIndex] = useState(null);
   const [mostrarForm, setMostrarForm] = useState(false);
   const [productos, setProductos] = useState([]);
+  const [ordenes, setOrdenes] = useState([]);
   const navigate = useNavigate();
   const [mostrarPerfil, setMostrarPerfil] = useState(false);
 
 const usuario = "productor"; 
-
+const totalOrdenes = ordenes.length;
 const [perfil, setPerfil] = useState({
   productor:"",
   finca: "",
@@ -72,6 +73,43 @@ const editarProducto = (index) => {
  useEffect(() => {
   localStorage.setItem("perfilProductor", JSON.stringify(perfil));
 }, [perfil]);
+
+ useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("ordenes")) || [];
+    setOrdenes(data);
+  }, []);
+
+useEffect(() => {
+  if (ordenes.length === 0) return;
+  setProductos(prevProductos => {
+
+  const actualizados = prevProductos.map(p => {
+  let vendidoExtra = 0;
+  let ingresoExtra = 0;
+
+  ordenes.forEach(o => {
+  if (o.producto === p.nombre) {
+  vendidoExtra += Number(o.cantidad);
+  ingresoExtra += Number(o.precio) * Number(o.cantidad);
+  }
+});
+
+if (vendidoExtra === 0) return p;
+
+return {
+  ...p,
+  vendido: (Number(p.vendido) || 0) + vendidoExtra,
+  ingresos: (Number(p.ingresos) || 0) + ingresoExtra,
+  stock: (Number(p.stock) || 0) - vendidoExtra
+  };
+  });
+
+    return actualizados;
+  });
+  
+  localStorage.removeItem("ordenes"); 
+}, [ordenes]);
+
   const handleImage = (e) => {
   const file = e.target.files[0];
   const reader = new FileReader();
@@ -124,6 +162,19 @@ const handlePerfilImage = (e) => {
 
   setMostrarForm(false);
 };
+ // Calcular ingresos por categoría
+  const ingresosPorCategoria = productos.reduce((acc, p) => {
+  const categoria = p.categoria || "Otros";
+  acc[categoria] = (acc[categoria] || 0) + Number(p.ingresos || 0);
+  return acc;
+}, {});
+
+  // Calcular ingresos totales
+  const ingresosTotales = productos.reduce((total, p) => {
+  return total + Number(p.ingresos || 0);
+}, 0);
+const ticketPromedio =
+totalOrdenes === 0 ? 0 : (ingresosTotales / totalOrdenes).toFixed(2);
   return (
 <div className="panel">
 
@@ -260,11 +311,11 @@ L.{p.precio} / {p.unidad}
 <section className="cardsproductor">
 <div className="card green">
 <h3>Ingresos Totales</h3>
-<p>L.{productos.reduce((a,b)=>a+b.ingresos,0)}</p>
+<p>L.{ingresosTotales}</p>
 </div>
 <div className="card blue">
 <h3>Total Órdenes</h3>
-<p>0</p>
+<p>{totalOrdenes}</p>
 </div>
 <div className="card purple">
 <h3>Productos Activos</h3>
@@ -272,7 +323,7 @@ L.{p.precio} / {p.unidad}
 </div>
 <div className="card orange">
 <h3>Ticket Promedio</h3>
-<p>L.0.00</p>
+<p>L.{ticketPromedio}</p>
 </div>
 </section>
 
@@ -298,7 +349,7 @@ L.{p.precio} / {p.unidad}
 <td>L.{p.ingresos}</td>
 <td>
 <span className={`badge ${p.stock < 5 ? 'low-stock' : ''}`}>
-{p.stock} {p.unit}
+{p.stock} {p.unidad}
 </span>
 </td>
 <td>⭐ N/A</td>
@@ -310,17 +361,28 @@ L.{p.precio} / {p.unidad}
 
 <section className="box">
 <h2>Ingresos por Categoría</h2>
-{productos.map((p,i)=>(
-<div key={i}>{p.categoria} - L.{p.ingresos}</div>
-
-))}
+{Object.entries(ingresosPorCategoria).length === 0 ? (
+<div className="empty">No hay ingresos por categoría</div>
+) : (
+Object.entries(ingresosPorCategoria).map(([cat, total], i) => (
+<div key={i}>{cat} - L.{total}</div>
+))
+)}
 </section>
-<section className="box"> <h2>Órdenes Recientes</h2> 
-<div className="empty">No hay órdenes recientes</div> 
+
+<section className="box">
+<h2>Órdenes Recientes</h2>
+{ordenes.length === 0 ? (
+<div className="empty">No hay órdenes recientes</div>
+) : (
+ordenes.map((o, i) => (
+<div key={i}>
+{o.producto} - {o.cantidad} x L.{o.precio} = L.{o.precio * o.cantidad}
+</div>
+))
+)}
 </section>
 </div>
- 
-
   );
 };
 

@@ -205,7 +205,244 @@ body {
   background: linear-gradient(135deg,#1abc9c,#16a085);
   transform: scale(1.05);
 }
+/* ============================= */
+/* CONTENEDOR DETALLE PRODUCTO */
+/* ============================= */
 
+.detalle-producto{
+width: 85%;
+margin: 30px auto;
+background: white;
+border-radius: 12px;
+padding: 30px;
+box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn{
+from{
+opacity:0;
+transform: translateY(10px);
+}
+to{
+opacity:1;
+transform: translateY(0);
+}
+}
+
+/* ============================= */
+/* TITULOS */
+/* ============================= */
+
+.detalle-producto h2{
+font-size: 26px;
+margin-bottom: 10px;
+color:#2c3e50;
+}
+
+/* ============================= */
+/* IMAGEN PRODUCTO */
+/* ============================= */
+
+.detalle-producto img{
+width:220px;
+border-radius:10px;
+margin:15px 0;
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+transition:transform 0.3s;
+}
+
+.detalle-producto img:hover{
+transform:scale(1.05);
+}
+
+/* ============================= */
+/* RESUMEN DE RESEÑAS */
+/* ============================= */
+
+.resumen-reseñas{
+display:flex;
+align-items:center;
+justify-content:space-between;
+background:#f7f9fb;
+padding:20px;
+border-radius:10px;
+margin:20px 0;
+}
+
+.resumen-reseñas h1{
+font-size:48px;
+color:#27ae60;
+margin:0;
+}
+
+.resumen-reseñas p{
+color:#555;
+font-size:16px;
+}
+
+/* ============================= */
+/* BOTÓN RESEÑA */
+/* ============================= */
+
+.resumen-reseñas button{
+background:#16a34a;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer;
+font-size:15px;
+font-weight:600;
+transition:0.3s;
+}
+
+.resumen-reseñas button:hover{
+background:#15803d;
+transform:scale(1.05);
+}
+
+/* ============================= */
+/* TARJETAS DE RESEÑAS */
+/* ============================= */
+
+.reseña{
+background:white;
+border-radius:10px;
+padding:15px 20px;
+margin:12px 0;
+box-shadow:0 3px 10px rgba(0,0,0,0.06);
+transition:0.3s;
+}
+
+.reseña:hover{
+transform:translateY(-3px);
+box-shadow:0 6px 14px rgba(0,0,0,0.12);
+}
+
+.reseña p{
+margin:5px 0;
+color:#444;
+}
+
+.reseña small{
+color:#777;
+font-size:12px;
+}
+
+/* ============================= */
+/* FORMULARIO RESEÑA */
+/* ============================= */
+
+.form-reseña{
+background:#f9fafb;
+padding:20px;
+margin-top:20px;
+border-radius:10px;
+display:flex;
+flex-direction:column;
+gap:12px;
+border:1px solid #eee;
+}
+
+.form-reseña h3{
+margin-bottom:10px;
+color:#2c3e50;
+}
+
+.form-reseña select{
+padding:10px;
+border-radius:6px;
+border:1px solid #ccc;
+font-size:14px;
+}
+
+.form-reseña textarea{
+resize:none;
+height:80px;
+padding:10px;
+border-radius:6px;
+border:1px solid #ccc;
+font-size:14px;
+}
+
+.form-reseña textarea:focus{
+outline:none;
+border-color:#27ae60;
+box-shadow:0 0 0 2px rgba(39,174,96,0.2);
+}
+
+/* ============================= */
+/* BOTÓN PUBLICAR */
+/* ============================= */
+
+.form-reseña button{
+background:#22c55e;
+color:white;
+border:none;
+padding:12px;
+border-radius:8px;
+font-weight:600;
+cursor:pointer;
+transition:0.3s;
+}
+
+.form-reseña button:hover{
+background:#16a34a;
+transform:scale(1.03);
+}
+
+/* ============================= */
+/* BOTÓN VOLVER */
+/* ============================= */
+
+.detalle-producto button:first-child{
+background:#e5e7eb;
+border:none;
+padding:10px 15px;
+border-radius:6px;
+cursor:pointer;
+margin-bottom:15px;
+transition:0.3s;
+}
+
+.detalle-producto button:first-child:hover{
+background:#d1d5db;
+}
+
+/* ============================= */
+/* ESTRELLAS */
+/* ============================= */
+
+.estrellas{
+color:#fbbf24;
+font-size:18px;
+letter-spacing:2px;
+}
+
+/* ============================= */
+/* RESPONSIVE */
+/* ============================= */
+
+@media (max-width:768px){
+
+.detalle-producto{
+width:95%;
+padding:20px;
+}
+
+.resumen-reseñas{
+flex-direction:column;
+gap:10px;
+text-align:center;
+}
+
+.detalle-producto img{
+width:100%;
+max-width:250px;
+}
+
+}
 /* ===== CHAT Y COMPRAS ===== */
 .chat-container,
 .compras-container {

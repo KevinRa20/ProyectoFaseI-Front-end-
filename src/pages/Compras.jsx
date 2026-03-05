@@ -41,6 +41,7 @@ import "../style/Compras.css";
     setMostrarFormulario(false);
     setCantidad(1);
     setProductoSeleccionado(null);
+    alert("El producto se agregó al carrito correctamente");
   };
 
   const finalizarCompra = () => {
@@ -97,7 +98,7 @@ import "../style/Compras.css";
 <p>Total: L.{resumenCompra.totalCompra}</p>
 <button onClick={() => setVista("productos")}>Volver</button>
 </div>
-      )}
+)}
 
 
 {vista === "historial" && (
@@ -125,7 +126,7 @@ import "../style/Compras.css";
 {mostrarFormulario && (
  <div className="modal">
 <div className="modal-content">
-<h2>Datos del Comprador</h2>
+<h2>Deja tus datos para el productor</h2>
 <input placeholder="Nombre"
 onChange={e => setDatosComprador({ ...datosComprador, nombre: e.target.value })} />
 <input placeholder="Residencia"
