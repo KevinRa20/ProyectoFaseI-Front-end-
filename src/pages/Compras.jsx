@@ -13,6 +13,7 @@ import "../style/Compras.css";
     residencia: "",
     direccion: "",
     telefono: "",
+    email:"",
     tipo: ""
   });
 
@@ -89,7 +90,7 @@ import "../style/Compras.css";
 <button onClick={finalizarCompra}>Finalizar compra</button>
 <button onClick={() => setVista("productos")}>Volver</button>
 </div>
-      )}
+)}
 
 {vista === "resumen" && resumenCompra && (
 <div>
@@ -126,7 +127,7 @@ import "../style/Compras.css";
 {mostrarFormulario && (
  <div className="modal">
 <div className="modal-content">
-<h2>Deja tus datos para el productor</h2>
+<h2>Dejale tus datos al productor</h2>
 <input placeholder="Nombre"
 onChange={e => setDatosComprador({ ...datosComprador, nombre: e.target.value })} />
 <input placeholder="Residencia"
@@ -135,6 +136,8 @@ onChange={e => setDatosComprador({ ...datosComprador, residencia: e.target.value
 onChange={e => setDatosComprador({ ...datosComprador, direccion: e.target.value })} />
 <input placeholder="Teléfono"
 onChange={e => setDatosComprador({ ...datosComprador, telefono: e.target.value })} />
+<input placeholder="Email"
+onChange={e => setDatosComprador({ ...datosComprador, email: e.target.value })} />
 <select value={datosComprador.tipo}onChange={e =>setDatosComprador({
 ...datosComprador,
 tipo: e.target.value

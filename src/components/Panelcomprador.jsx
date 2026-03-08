@@ -12,6 +12,7 @@ import axios from "axios";
   const [productos, setProductos] = useState([]);
   const [vista, setVista] = useState("productos");
   const [vistaDetalle, setVistaDetalle] = useState(false);
+  const [tipoDetalle, setTipoDetalle] = useState(null);
  const [reseñas, setReseñas] = useState([]);
  const [mostrarFormularioReseña, setMostrarFormularioReseña] = useState(false);
  const [nuevaReseña, setNuevaReseña] = useState({
@@ -91,12 +92,9 @@ import axios from "axios";
   });
 
   const abrirFormulario = (producto) => {
-    setProductoSeleccionado(producto);
-    setVistaDetalle(true);
-
-  const todas = JSON.parse(localStorage.getItem("reseñas")) || [];
-  const reseñasProducto = todas.filter(r => r.producto === producto.nombre);
-  setReseñas(reseñasProducto);
+  setProductoSeleccionado(producto);
+  setTipoDetalle("compra");
+  setVistaDetalle(true);
   };
   const guardarReseña = () => {
 
@@ -132,6 +130,7 @@ import axios from "axios";
 const verReseñas = (producto) => {
 
   setProductoSeleccionado(producto);
+  setTipoDetalle("reseñas");
   setVistaDetalle(true);
 
   const todas = JSON.parse(localStorage.getItem("reseñas")) || [];
@@ -166,6 +165,11 @@ alt="notificaciones"
 onClick={() => setMostrarNotificaciones(!mostrarNotificaciones)}
 
 />
+{notificaciones.length > 0 && (
+<span className="badge-notificaciones">
+{notificaciones.length}
+</span>
+)}
 <img
  src="https://cdn-icons-png.flaticon.com/128/15598/15598573.png"
 alt="carrito"
@@ -224,22 +228,33 @@ onChange={(e) => setBusqueda(e.target.value)}/>
 
 {/* CHAT */}
 {vista === "chat" && <Chat usuario={usuario} volver={() => setVista("productos")} />}
+{tipoDetalle === "compra" && (
+<div>
 
+<img
+  src={productoSeleccionado.imagen}
+  alt={productoSeleccionado.nombre}
+  style={{width:"200px"}}/>
+
+<p>{productoSeleccionado.descripcion}</p>
+
+<p><strong>Precio:</strong> L.{productoSeleccionado.precio}</p>
+<p><strong>Productor:</strong> {productoSeleccionado.productor}</p>
 {/* COMPRAS */}
 <Compras
-vista={vista}
-setVista={setVista}
-productoSeleccionado={productoSeleccionado}
-setProductoSeleccionado={setProductoSeleccionado}
+vista={vista} 
+setVista={setVista} 
+productoSeleccionado={productoSeleccionado} 
+setProductoSeleccionado={setProductoSeleccionado} 
 registrarCompra={registrarCompra}
 />
-
+</div>
+)}
 {/* PRODUCTOS */}
 {vistaDetalle && productoSeleccionado && (
 <div className="detalle-producto">
 
-<button onClick={() => setVistaDetalle(false)}>Volver al Producto</button>
-
+<button onClick={() => setVistaDetalle(false)}>Volver</button>
 <h2>{productoSeleccionado.nombre}</h2>
 
 <img
@@ -254,16 +269,18 @@ registrarCompra={registrarCompra}
 <p><strong>Productor:</strong> {productoSeleccionado.productor}</p>
 
 <hr/>
+{tipoDetalle === "reseñas" && (
+<div>
 
 <h2>Reseñas de {productoSeleccionado.nombre}</h2>
 
 <div className="resumen-reseñas">
-
 <h1>{promedio}</h1>
 <p>{reseñas.length} reseñas</p>
 
 <button onClick={() => setMostrarFormularioReseña(true)}>
-Escribir Reseña</button>
+Escribir Reseña
+</button>
 </div>
 
 {reseñas.length === 0 ? (
@@ -277,6 +294,9 @@ reseñas.map((r, i) => (
 <hr/>
 </div>
 ))
+)}
+
+</div>
 )}
 
 {mostrarFormularioReseña && (
@@ -303,8 +323,7 @@ value={nuevaReseña.comentario}
 onChange={(e)=>
 setNuevaReseña({...nuevaReseña, comentario:e.target.value})
 }/>
-
-<button onClick={guardarReseña}>Publicar</button>
+<button onClick={guardarReseña}>Publicar Reseña</button>
 
 </div>
 )}

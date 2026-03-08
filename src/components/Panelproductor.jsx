@@ -224,8 +224,7 @@ alt="icono-notificaciones"/>
 <input name="tamano" placeholder="Tamaño de la finca (ej: 50 ha)" value={perfil.tamano} onChange={handlePerfilChange} />
 <input name="año" placeholder="Año de establecimiento" value={perfil.año} onChange={handlePerfilChange} />
 <textarea name="descripcion" placeholder="Describe tu finca" value={perfil.descripcion} onChange={handlePerfilChange}></textarea>
-
- <input type="file" accept="image/*" onChange={handlePerfilImage} />
+<input type="file" accept="image/*" onChange={handlePerfilImage} />
 
 <div className="acciones">
 <button onClick={() => setMostrarPerfil(false)}>Guardar</button>
