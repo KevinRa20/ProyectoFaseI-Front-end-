@@ -31,7 +31,7 @@ import axios from "axios";
 
   const navigate = useNavigate();
  const usuario = JSON.parse(localStorage.getItem("usuario"));
- const comprador = usuario?.email;
+ const comprador = usuario?.email?.toLowerCase();
   const categorias = ["Todas", "Hortalizas", "Frutas", "Verduras", "Cereales", "Lácteos", "Raíces", "Industriales", "Leguminosas", "Otros"];
   const regiones = ["Todas", "Región Occidental", "Región Noroccidental", "Región Nororiental", "Región Centro Occidental", "Región Centro Oriental", "Región Sur"];
   const precios = ["Todos", 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
@@ -56,25 +56,34 @@ import axios from "axios";
   const data = JSON.parse(localStorage.getItem("productos")) || [];
   setProductos(data);
 
+}, [comprador]);
+const cargarNotificaciones = async () => {
+
   if (!comprador) return;
 
-  const cargarNotificaciones = async () => {
-    try {
-      const res = await axios.get(
-        `http://localhost:5000/api/notificaciones/${encodeURIComponent(comprador)}`
-      );
-      setNotificaciones(res.data);
-    } catch (err) {
-      console.error("Error al cargar notificaciones", err);
-    }
-  };
+  try {
 
-  cargarNotificaciones();
-  const intervalo = setInterval(cargarNotificaciones, 3000);
+    const res = await axios.get(
+      `http://localhost:5000/api/notificaciones/${encodeURIComponent(comprador)}`
+    );
+     console.log("Notificaciones recibidas:", res.data);
+    setNotificaciones(res.data.sort((a,b)=> new Date(b.fecha) - new Date(a.fecha)));
 
-  return () => clearInterval(intervalo);
-}, [comprador]);
+  } catch (err) {
+    console.error("Error al cargar notificaciones", err);
+  }
 
+};
+const marcarComoLeidas = async () => {
+
+  try {
+    await axios.put(`http://localhost:5000/api/notificaciones/marcar-leidas/${comprador}`);
+    cargarNotificaciones();
+  } catch (error) {
+    console.error("Error al marcar notificaciones");
+  }
+
+};
   //  FILTRO COMPLETO (categoría + región + precio + búsqueda)
   const productosFiltrados = productos.filter((p) => {
     const texto = busqueda.toLowerCase();
@@ -90,12 +99,11 @@ import axios from "axios";
 
     return cumpleBusqueda && cumpleCategoria && cumpleRegion && cumplePrecio;
   });
-
-  const abrirFormulario = (producto) => {
+ const abrirFormulario = (producto) => { 
   setProductoSeleccionado(producto);
-  setTipoDetalle("compra");
-  setVistaDetalle(true);
+  setVista("carrito"); 
   };
+
   const guardarReseña = () => {
 
   const reseña = {
@@ -105,7 +113,7 @@ import axios from "axios";
     comentario: nuevaReseña.comentario,
     fecha: new Date().toLocaleString()
   };
-
+   
   const todas = JSON.parse(localStorage.getItem("reseñas")) || [];
   todas.push(reseña);
 
@@ -142,9 +150,13 @@ const verReseñas = (producto) => {
   setReseñas(reseñasProducto);
 
 };
+// IA básica: detectar producto más vendido
+const productoMasVendido = productos.reduce((max, prod) => {
+  if (!max) return prod;
+  return (prod.vendido || 0) > (max.vendido || 0) ? prod : max;
+}, null);
 return (
 <div className="panel-comprador">
-
 {/* HEADER */}
 <header className="header">
 <div>
@@ -162,7 +174,11 @@ return (
 <img
 src="https://cdn-icons-png.flaticon.com/128/3239/3239952.png"
 alt="notificaciones"
-onClick={() => setMostrarNotificaciones(!mostrarNotificaciones)}
+onClick={() => {
+setMostrarNotificaciones(!mostrarNotificaciones);
+cargarNotificaciones();
+marcarComoLeidas();
+}}
 
 />
 {notificaciones.length > 0 && (
@@ -173,9 +189,9 @@ onClick={() => setMostrarNotificaciones(!mostrarNotificaciones)}
 <img
  src="https://cdn-icons-png.flaticon.com/128/15598/15598573.png"
 alt="carrito"
-onClick={() => setVista("carrito")}/>
-<button onClick={() => setVista("historial")}>Historial</button>
-<button className="logout1" onClick={() => navigate("/login")}>Salir</button>
+onClick={() => {setProductoSeleccionado(null);setVista("carrito");}}/>
+<button onClick={() => {setProductoSeleccionado(null);setVista("historial");}}>Historial</button>
+<button className="logout2" onClick={() => navigate("/login")}>Salir</button>
 </div>
 </header>
 
@@ -188,9 +204,9 @@ onClick={() => setVista("carrito")}/>
 ) : (
 notificaciones.map((n) => (
 <div key={n._id} className="notificacion-item">
-<p><strong>📦 Producto:</strong> {n.producto}</p>
-<p><strong>👨‍🌾 Productor:</strong> {n.productor}</p>
-<p><strong>✉️ Mensaje:</strong> {n.mensaje}</p>
+<p><strong>{n.productor}</strong> te envió una actualización
+</p><p>Producto: <strong>{n.producto}</strong></p>
+<p>{n.mensaje}</p>
 <small>{new Date(n.fecha).toLocaleString()}</small>
 <hr />
 </div>
@@ -226,29 +242,18 @@ onChange={(e) => setBusqueda(e.target.value)}/>
 </div>
 </section>
 
-{/* CHAT */}
-{vista === "chat" && <Chat usuario={usuario} volver={() => setVista("productos")} />}
-{tipoDetalle === "compra" && (
-<div>
+{vista === "chat" && (
+<Chat usuario={usuario} volver={() => setVista("productos")} />
+)}
 
-<img
-  src={productoSeleccionado.imagen}
-  alt={productoSeleccionado.nombre}
-  style={{width:"200px"}}/>
-
-<p>{productoSeleccionado.descripcion}</p>
-
-<p><strong>Precio:</strong> L.{productoSeleccionado.precio}</p>
-<p><strong>Productor:</strong> {productoSeleccionado.productor}</p>
-{/* COMPRAS */}
+{(vista === "carrito" || vista === "historial" || vista === "resumen") && (
 <Compras
-vista={vista} 
-setVista={setVista} 
-productoSeleccionado={productoSeleccionado} 
-setProductoSeleccionado={setProductoSeleccionado} 
+vista={vista}
+setVista={setVista}
 registrarCompra={registrarCompra}
+productoSeleccionado={productoSeleccionado} 
+setProductoSeleccionado={setProductoSeleccionado}
 />
-</div>
 )}
 {/* PRODUCTOS */}
 {vistaDetalle && productoSeleccionado && (
@@ -258,8 +263,8 @@ registrarCompra={registrarCompra}
 <h2>{productoSeleccionado.nombre}</h2>
 
 <img
-  src={productoSeleccionado.imagen}
-  alt={productoSeleccionado.nombre}
+  src={productoSeleccionado.imagen} 
+  alt={productoSeleccionado.nombre} 
   style={{width:"200px"}}
 />
 
@@ -340,6 +345,9 @@ productosFiltrados.map((prod, index) => (
 <img src={prod.imagen} alt={prod.nombre} />
 <div className="card-body">
 <h2>{prod.nombre}</h2>
+{productoMasVendido && prod.nombre === productoMasVendido.nombre && (
+<p className="mas-vendido"> Producto más vendido</p>
+)}
 <span className="category">{prod.categoria}</span>
 <p>{prod.descripcion}</p>
 <p><strong>Finca: </strong> {prod.finca}</p>

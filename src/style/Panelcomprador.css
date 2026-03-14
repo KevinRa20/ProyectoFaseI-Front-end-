@@ -1,476 +1,302 @@
-/* ===== RESET ===== */
-* {
-  box-sizing: border-box;
-  font-family: "Segoe UI", system-ui, sans-serif;
+/* Panelcomprador.css - Diseño Agrícola Profesional */
+
+:root {
+  --verde-oscuro: #2d5a27;
+  --verde-primario: #4caf50;
+  --verde-claro: #e8f5e9;
+  --amarillo-cosecha: #ffb300;
+  --marron-tierra: #5d4037;
+  --blanco: #ffffff;
+  --gris-suave: #f4f7f6;
+  --sombra: 0 4px 15px rgba(0, 0, 0, 0.1);
+  --transicion: all 0.3s ease;
 }
 
-body {
-  margin: 0;
-  background: linear-gradient(135deg, #f4fdf7, #eefaf1);
-}
-
-/* ===== CONTENEDOR ===== */
 .panel-comprador {
-  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--gris-suave);
   min-height: 100vh;
+  padding-bottom: 50px;
 }
 
-/* ===== HEADER ===== */
+/* --- HEADER --- */
 .header {
+  background: linear-gradient(135deg, var(--verde-oscuro), var(--verde-primario));
+  color: white;
+  padding: 1.5rem 5%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(90deg, #27ae60, #2ecc71);
-  color: white;
-  padding: 15px 25px;
-  border-radius: 15px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-  animation: slideDown 0.6s ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .header h1 {
+  font-size: 1.8rem;
   margin: 0;
-  font-size: 26px;
+  letter-spacing: 1px;
 }
 
 .header h2 {
-  margin: 0;
-  font-size: 14px;
+  font-size: 0.9rem;
+  font-weight: bold;
   opacity: 0.9;
+  color: var(--blanco);
 }
 
 .icons {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 20px;
 }
 
 .icons img {
-  width: 38px;
+  width: 30px;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  filter: brightness(0) invert(1); /* Hace los iconos blancos */
+  transition: var(--transicion);
 }
 
 .icons img:hover {
-  transform: scale(1.15) rotate(8deg);
+  transform: scale(1.1);
 }
 
+.badge-notificaciones {
+  background: var(--amarillo-cosecha);
+  color: var(--marron-tierra);
+  border-radius: 50%;
+  padding: 2px 7px;
+  font-size: 12px;
+  font-weight: bold;
+  position: absolute;
+  margin-left: -15px;
+  margin-top: -10px;
+  position: static; /* Quitar el absolute */
+  margin: 0;
+}
+
+/* --- BOTONES DEL HEADER --- */
 .icons button {
-  background: #ecf0f1;
+  padding: 8px 15px;
+  border-radius: 20px;
   border: none;
-  padding: 8px 14px;
-  border-radius: 10px;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.3s ease;
+  color: white;
+  transition: var(--transicion);
+}
+
+.icons button:first-of-type {
+  background-color: var(--amarillo-cosecha); /* Historial */
+}
+
+.logout2 {
+  background-color: #d32f2f; /* Salir */
 }
 
 .icons button:hover {
-  background: #1abc9c;
-  color: white;
+  filter: brightness(1.1);
   transform: translateY(-2px);
 }
 
-.logout1 {
-  background: #e74c3c !important;
-  color: white !important;
-}
-
-/* ===== NOTIFICACIONES ===== */
-.notificaciones {
-  position: absolute;
-  right: 20px;
-  top: 90px;
-  background: white;
-  width: 280px;
-  padding: 15px;
-  border-radius: 15px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-  animation: fadeIn 0.3s ease;
-  z-index: 99;
-}
-
-.notificaciones h3 {
-  margin-top: 0;
-  color: #27ae60;
-}
-
-/* ===== SEARCH BAR ===== */
+/* --- BARRA DE BÚSQUEDA Y FILTROS --- */
 .search-bar {
-  margin: 20px 0;
-  background: white;
-  padding: 15px;
+  background: var(--blanco);
+  margin: 20px 5%;
+  padding: 20px;
   border-radius: 15px;
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: var(--sombra);
 }
 
 .search-input {
   flex: 2;
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: #ecf0f1;
+  background: var(--gris-suave);
   padding: 10px 15px;
-  border-radius: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
 }
 
 .search-input input {
   border: none;
   background: transparent;
-  outline: none;
   width: 100%;
-  font-size: 15px;
+  margin-left: 10px;
+  outline: none;
 }
 
 .filters {
-  flex: 3;
+  flex: 1;
   display: flex;
   gap: 10px;
 }
 
 .filters select {
-  flex: 1;
   padding: 10px;
   border-radius: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
+  background: var(--blanco);
+  color: var(--marron-tierra);
   cursor: pointer;
 }
 
-/* ===== PRODUCTOS ===== */
+/* --- GRID DE PRODUCTOS --- */
 .products {
   display: grid;
-  grid-template-columns: repeat(auto-fill,minmax(260px,1fr));
-  gap: 20px;
-  animation: fadeIn 0.5s ease;
-  text-align: center;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  padding: 20px 5%;
 }
 
 .card2 {
-  background: white;
-  border-radius: 15px;
+  background: var(--blanco);
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-  transition: transform 0.3s ease;
+  box-shadow: var(--sombra);
+  transition: var(--transicion);
+  border-bottom: 5px solid var(--verde-primario);
 }
 
 .card2:hover {
-  transform: translateY(-8px) scale(1.02);
+  transform: translateY(-10px);
 }
 
 .card2 img {
   width: 100%;
-  height: 180px;
+  height: 200px;
   object-fit: cover;
 }
 
 .card-body {
-  padding: 15px;
+  padding: 20px;
 }
 
 .card-body h2 {
-  margin: 0;
-  color: #2c3e50;
+  color: var(--marron-tierra);
+  font-size: 1.4rem;
+  margin-bottom: 5px;
 }
 
 .category {
-  background: #1abc9c;
-  color: white;
+  background: var(--verde-claro);
+  color: var(--verde-oscuro);
   padding: 3px 10px;
-  border-radius: 20px;
-  font-size: 12px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: bold;
 }
 
-.card-body p {
-  font-size: 14px;
-  margin: 4px 0;
-}
-
-.card-body button {
-  margin-top: 10px;
-  width: 100%;
-  background: linear-gradient(135deg,#27ae60,#2ecc71);
-  border: none;
-  padding: 10px;
-  border-radius: 10px;
+.mas-vendido {
+  background: var(--amarillo-cosecha);
   color: white;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 5px;
+  display: inline-block;
+  margin-bottom: 10px;
+  animation: pulse 2s infinite;
+}
+
+/* --- BOTONES DE ACCIÓN --- */
+.botones-producto {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.btn-agregar {
+  background-color: var(--verde-oscuro);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: var(--transicion);
 }
 
-.card-body button:hover {
-  background: linear-gradient(135deg,#1abc9c,#16a085);
-  transform: scale(1.05);
-}
-/* ============================= */
-/* CONTENEDOR DETALLE PRODUCTO */
-/* ============================= */
-
-.detalle-producto{
-width: 85%;
-margin: 30px auto;
-background: white;
-border-radius: 12px;
-padding: 30px;
-box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-animation: fadeIn 0.4s ease;
+.btn-reseñas {
+  background-color: var(--amarillo-cosecha);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: var(--transicion);
 }
 
-@keyframes fadeIn{
-from{
-opacity:0;
-transform: translateY(10px);
-}
-to{
-opacity:1;
-transform: translateY(0);
-}
+.btn-agregar:hover, .btn-reseñas:hover {
+  filter: brightness(1.2);
+  letter-spacing: 0.5px;
 }
 
-/* ============================= */
-/* TITULOS */
-/* ============================= */
-
-.detalle-producto h2{
-font-size: 26px;
-margin-bottom: 10px;
-color:#2c3e50;
+/* --- NOTIFICACIONES --- */
+.notificaciones {
+  position: absolute;
+  right: 5%;
+  background: white;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  padding: 15px;
+  z-index: 2000;
+  animation: slideDown 0.4s ease-out;
 }
 
-/* ============================= */
-/* IMAGEN PRODUCTO */
-/* ============================= */
-
-.detalle-producto img{
-width:220px;
-border-radius:10px;
-margin:15px 0;
-box-shadow:0 4px 12px rgba(0,0,0,0.1);
-transition:transform 0.3s;
+.notificacion-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
 }
 
-.detalle-producto img:hover{
-transform:scale(1.05);
+.notificacion-item strong {
+  color: var(--verde-oscuro);
 }
 
-/* ============================= */
-/* RESUMEN DE RESEÑAS */
-/* ============================= */
-
-.resumen-reseñas{
-display:flex;
-align-items:center;
-justify-content:space-between;
-background:#f7f9fb;
-padding:20px;
-border-radius:10px;
-margin:20px 0;
+/* --- DETALLE DE PRODUCTO --- */
+.detalle-producto {
+  background: white;
+  margin: 30px 5%;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: var(--sombra);
+  animation: fadeIn 0.5s ease;
 }
 
-.resumen-reseñas h1{
-font-size:48px;
-color:#27ae60;
-margin:0;
-}
-
-.resumen-reseñas p{
-color:#555;
-font-size:16px;
-}
-
-/* ============================= */
-/* BOTÓN RESEÑA */
-/* ============================= */
-
-.resumen-reseñas button{
-background:#16a34a;
-color:white;
-border:none;
-padding:12px 20px;
-border-radius:8px;
-cursor:pointer;
-font-size:15px;
-font-weight:600;
-transition:0.3s;
-}
-
-.resumen-reseñas button:hover{
-background:#15803d;
-transform:scale(1.05);
-}
-
-/* ============================= */
-/* TARJETAS DE RESEÑAS */
-/* ============================= */
-
-.reseña{
-background:white;
-border-radius:10px;
-padding:15px 20px;
-margin:12px 0;
-box-shadow:0 3px 10px rgba(0,0,0,0.06);
-transition:0.3s;
-}
-
-.reseña:hover{
-transform:translateY(-3px);
-box-shadow:0 6px 14px rgba(0,0,0,0.12);
-}
-
-.reseña p{
-margin:5px 0;
-color:#444;
-}
-
-.reseña small{
-color:#777;
-font-size:12px;
-}
-
-/* ============================= */
-/* FORMULARIO RESEÑA */
-/* ============================= */
-
-.form-reseña{
-background:#f9fafb;
-padding:20px;
-margin-top:20px;
-border-radius:10px;
-display:flex;
-flex-direction:column;
-gap:12px;
-border:1px solid #eee;
-}
-
-.form-reseña h3{
-margin-bottom:10px;
-color:#2c3e50;
-}
-
-.form-reseña select{
-padding:10px;
-border-radius:6px;
-border:1px solid #ccc;
-font-size:14px;
-}
-
-.form-reseña textarea{
-resize:none;
-height:80px;
-padding:10px;
-border-radius:6px;
-border:1px solid #ccc;
-font-size:14px;
-}
-
-.form-reseña textarea:focus{
-outline:none;
-border-color:#27ae60;
-box-shadow:0 0 0 2px rgba(39,174,96,0.2);
-}
-
-/* ============================= */
-/* BOTÓN PUBLICAR */
-/* ============================= */
-
-.form-reseña button{
-background:#22c55e;
-color:white;
-border:none;
-padding:12px;
-border-radius:8px;
-font-weight:600;
-cursor:pointer;
-transition:0.3s;
-}
-
-.form-reseña button:hover{
-background:#16a34a;
-transform:scale(1.03);
-}
-
-/* ============================= */
-/* BOTÓN VOLVER */
-/* ============================= */
-
-.detalle-producto button:first-child{
-background:#e5e7eb;
-border:none;
-padding:10px 15px;
-border-radius:6px;
-cursor:pointer;
-margin-bottom:15px;
-transition:0.3s;
-}
-
-.detalle-producto button:first-child:hover{
-background:#d1d5db;
-}
-
-/* ============================= */
-/* ESTRELLAS */
-/* ============================= */
-
-.estrellas{
-color:#fbbf24;
-font-size:18px;
-letter-spacing:2px;
-}
-
-/* ============================= */
-/* RESPONSIVE */
-/* ============================= */
-
-@media (max-width:768px){
-
-.detalle-producto{
-width:95%;
-padding:20px;
-}
-
-.resumen-reseñas{
-flex-direction:column;
-gap:10px;
-text-align:center;
-}
-
-.detalle-producto img{
-width:100%;
-max-width:250px;
-}
-
-}
-/* ===== CHAT Y COMPRAS ===== */
-.chat-container,
-.compras-container {
-  animation: fadeIn 0.4s ease;
-}
-
-/* ===== ANIMACIONES ===== */
+/* --- ANIMACIONES --- */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
 @keyframes slideDown {
-  from { transform: translateY(-30px); opacity: 0; }
+  from { transform: translateY(-20px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
 
-/* ===== RESPONSIVE ===== */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  .filters {
+  .header {
     flex-direction: column;
+    text-align: center;
+    gap: 15px;
   }
-
-  .icons button {
-    display: none;
-  }
-
-  .header h2 {
-    display: none;
+  .search-bar {
+    flex-direction: column;
   }
 }

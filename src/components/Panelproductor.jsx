@@ -3,14 +3,25 @@ import "../style/Panelproductor.css";
 import { useNavigate } from "react-router-dom";
 import Inventario from "../pages/Inventario";
 import Notificaciones from "../pages/Notificaciones"
+import NotificacionesProductor from "../pages/NotificacionesProductor";
 import Chat from "../pages/Chat";
-
+import {Chart as ChartJS,CategoryScale,LinearScale,BarElement,ArcElement,Tooltip,Legend} from "chart.js";
+import { Bar,  } from "react-chartjs-2";
+ChartJS.register(
+CategoryScale,
+LinearScale,
+BarElement,
+ArcElement,
+Tooltip,
+Legend
+);
 const PanelProductor = () => {
   const [vista, setVista] = useState("inicio");
   const [editandoIndex, setEditandoIndex] = useState(null);
   const [mostrarForm, setMostrarForm] = useState(false);
   const [productos, setProductos] = useState([]);
   const [ordenes, setOrdenes] = useState([]);
+  const [notificaciones, setNotificaciones] = useState([]);
   const navigate = useNavigate();
   const [mostrarPerfil, setMostrarPerfil] = useState(false);
 
@@ -25,7 +36,7 @@ const [perfil, setPerfil] = useState({
   tamano: "",
   año: "",
   descripcion: "",
-  imagen: ""
+  
 });
   const [nuevoProducto, setNuevoProducto] = useState({
     nombre: "",
@@ -48,6 +59,12 @@ const editarProducto = (index) => {
   setEditandoIndex(index);
   setMostrarForm(true);
 };
+//Recibir notificaciones
+useEffect(() => {
+const data = JSON.parse(localStorage.getItem("notificaciones")) || [];
+setNotificaciones(data);
+}, []);
+const notificacionesNoLeidas = notificaciones.filter(n => !n.leido).length;
   // cargar productos guardados
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("productos")) || [];
@@ -81,33 +98,32 @@ const editarProducto = (index) => {
 
 useEffect(() => {
   if (ordenes.length === 0) return;
+
   setProductos(prevProductos => {
+const actualizados = prevProductos.map(p => {
+let vendidoExtra = 0;
+let ingresoExtra = 0;
 
-  const actualizados = prevProductos.map(p => {
-  let vendidoExtra = 0;
-  let ingresoExtra = 0;
-
-  ordenes.forEach(o => {
-  if (o.producto === p.nombre) {
-  vendidoExtra += Number(o.cantidad);
-  ingresoExtra += Number(o.precio) * Number(o.cantidad);
-  }
+ordenes.forEach(o => {
+if (o.producto === p.nombre) {
+vendidoExtra += Number(o.cantidad);
+ingresoExtra += Number(o.cantidad) * Number(o.precio);
+}
 });
 
 if (vendidoExtra === 0) return p;
-
 return {
-  ...p,
-  vendido: (Number(p.vendido) || 0) + vendidoExtra,
-  ingresos: (Number(p.ingresos) || 0) + ingresoExtra,
-  stock: (Number(p.stock) || 0) - vendidoExtra
-  };
+...p,
+vendido: (Number(p.vendido) || 0) + vendidoExtra,
+ingresos: (Number(p.ingresos) || 0) + ingresoExtra,
+stock: Math.max((Number(p.stock) || 0) - vendidoExtra, 0)
+};
+});
+return actualizados;
   });
 
-    return actualizados;
-  });
-  
-  localStorage.removeItem("ordenes"); 
+  localStorage.removeItem("ordenes");
+
 }, [ordenes]);
 
   const handleImage = (e) => {
@@ -122,14 +138,6 @@ return {
   setPerfil({ ...perfil, [e.target.name]: e.target.value });
 };
 
-const handlePerfilImage = (e) => {
-  const file = e.target.files[0];
-  const reader = new FileReader();
-  reader.onloadend = () => {
-    setPerfil({ ...perfil, imagen: reader.result });
-  };
-  reader.readAsDataURL(file);
-};
   const agregarProducto = () => {
   const productoConPerfil = {
     ...nuevoProducto,
@@ -163,18 +171,108 @@ const handlePerfilImage = (e) => {
   setMostrarForm(false);
 };
  // Calcular ingresos por categoría
-  const ingresosPorCategoria = productos.reduce((acc, p) => {
-  const categoria = p.categoria || "Otros";
-  acc[categoria] = (acc[categoria] || 0) + Number(p.ingresos || 0);
-  return acc;
-}, {});
+const ingresosPorCategoria = {}
+productos.forEach((p) => {
+  const categoria = p.categoria || "Sin categoría";
+  const ingresos = Number(p.ingresos) || 0;
 
+  if (ingresosPorCategoria[categoria]) {
+    ingresosPorCategoria[categoria] += ingresos;
+  } else {
+    ingresosPorCategoria[categoria] = ingresos;
+  }
+});
+const dataCategorias = {
+  labels: Object.keys(ingresosPorCategoria),
+  datasets: [
+{
+label: "Ingresos por Categoría (L.)",
+data: Object.values(ingresosPorCategoria),
+ backgroundColor: [
+"#4CAF50",
+"#FF9800",
+"#2196F3",
+"#9C27B0",
+"#E91E63",
+"#795548"
+],
+borderRadius: 6
+}
+  ]
+};
+const opcionesCategorias = {
+responsive: true,
+indexAxis: "y", // barra horizontal
+plugins: {
+legend: {
+display: false
+},
+tooltip: {
+callbacks: {
+label: function(context) {
+return `L. ${context.raw}`;
+}
+}
+}
+},
+scales: {
+x: {
+ticks: {
+callback: function(value) {
+return "L." + value;
+}
+}
+}
+}
+};
+//Ingresos por productos
+const ingresosPorProducto = {};
+productos.forEach(p => {
+  ingresosPorProducto[p.nombre] = Number(p.ingresos) || 0;
+});
+const reseñas = JSON.parse(localStorage.getItem("reseñas")) || [];
+const ratingPromedio = (nombreProducto) => {
+  const lista = reseñas.filter(r => r.producto === nombreProducto);
+
+  if (lista.length === 0) return "N/A";
+
+  const promedio =
+    lista.reduce((sum, r) => sum + r.rating, 0) / lista.length;
+
+  return promedio.toFixed(1);
+};
   // Calcular ingresos totales
   const ingresosTotales = productos.reduce((total, p) => {
-  return total + Number(p.ingresos || 0);
+   return total + (Number(p.ingresos) || 0);
 }, 0);
 const ticketPromedio =
 totalOrdenes === 0 ? 0 : (ingresosTotales / totalOrdenes).toFixed(2);
+// ===== MODULO IA: ANALISIS DE PRODUCTOS =====
+
+// ordenar productos por cantidad vendida
+const productosMasVendidos = [...productos]
+.sort((a,b) => (b.vendido || 0) - (a.vendido || 0))
+.slice(0,3);
+// Datos para grafica productos mas vendidos
+const dataProductosVendidos = {
+labels: productosMasVendidos.map(p => p.nombre),
+datasets: [
+{
+label: "Cantidad Vendida",
+data: productosMasVendidos.map(p => p.vendido || 0),
+backgroundColor: "#4CAF50"
+}
+]
+};
+// recomendación simple de IA
+let recomendacionIA = "";
+
+if(productosMasVendidos.length > 0){
+  recomendacionIA = `Tu producto más demandado es ${productosMasVendidos[0].nombre}. 
+  Considera aumentar el stock para aprovechar la demanda.`;
+}else{
+  recomendacionIA = "Aún no hay suficientes ventas para generar recomendaciones.";
+}
   return (
 <div className="panel">
 
@@ -186,7 +284,7 @@ totalOrdenes === 0 ? 0 : (ingresosTotales / totalOrdenes).toFixed(2);
 <button className="logout"onClick={() => navigate("/login")}>Salir</button>
 <img
   className="icono-perfil"
-  src={perfil.imagen || "https://cdn-icons-png.flaticon.com/128/2550/2550260.png"}
+  src={"https://cdn-icons-png.flaticon.com/128/2550/2550260.png"}
   alt="perfil"
   onClick={() => setMostrarPerfil(true)}
   style={{ cursor: "pointer" }}
@@ -197,10 +295,20 @@ totalOrdenes === 0 ? 0 : (ingresosTotales / totalOrdenes).toFixed(2);
   alt="icono-mensajes"
   onClick={() => setVista("chat")}
 />
+<div className="notificacion-container" onClick={() => setVista("pedidos")}>
 <img
 className="icono-notificaciones"
 src="https://cdn-icons-png.flaticon.com/128/3239/3239952.png"
-alt="icono-notificaciones"/>
+alt="icono-notificaciones"
+/>
+
+{notificacionesNoLeidas > 0 && (
+<span className="badge-notificacion">
+{notificacionesNoLeidas}
+</span>
+)}
+
+</div>
 </header>
 <nav className="menu">
 <button className="active"onClick={() => navigate("/panelproductor")}>Análisis de Ventas</button>
@@ -210,6 +318,7 @@ alt="icono-notificaciones"/>
 </nav>
 {vista === "inventario" && <Inventario />}
 {vista === "notificaciones" && <Notificaciones/>}
+{vista === "pedidos" && <NotificacionesProductor />}
 {vista === "chat" && <Chat usuario={usuario} />}
 {/* FORMULARIO */}
 {mostrarPerfil && (
@@ -224,7 +333,7 @@ alt="icono-notificaciones"/>
 <input name="tamano" placeholder="Tamaño de la finca (ej: 50 ha)" value={perfil.tamano} onChange={handlePerfilChange} />
 <input name="año" placeholder="Año de establecimiento" value={perfil.año} onChange={handlePerfilChange} />
 <textarea name="descripcion" placeholder="Describe tu finca" value={perfil.descripcion} onChange={handlePerfilChange}></textarea>
-<input type="file" accept="image/*" onChange={handlePerfilImage} />
+
 
 <div className="acciones">
 <button onClick={() => setMostrarPerfil(false)}>Guardar</button>
@@ -310,7 +419,7 @@ L.{p.precio} / {p.unidad}
 <section className="cardsproductor">
 <div className="card green">
 <h3>Ingresos Totales</h3>
-<p>L.{ingresosTotales}</p>
+<p>L.{ingresosTotales }</p>
 </div>
 <div className="card blue">
 <h3>Total Órdenes</h3>
@@ -345,13 +454,13 @@ L.{p.precio} / {p.unidad}
 <td>{p.nombre}</td>
 <td>{p.categoria}</td>
 <td>{p.vendido}</td>
-<td>L.{p.ingresos}</td>
+<td>L.{ingresosPorProducto[p.nombre] || 0}</td>
 <td>
 <span className={`badge ${p.stock < 5 ? 'low-stock' : ''}`}>
 {p.stock} {p.unidad}
 </span>
 </td>
-<td>⭐ N/A</td>
+<td>{ratingPromedio(p.nombre)}</td>
 </tr>
 ))}
 </tbody>
@@ -360,15 +469,39 @@ L.{p.precio} / {p.unidad}
 
 <section className="box">
 <h2>Ingresos por Categoría</h2>
-{Object.entries(ingresosPorCategoria).length === 0 ? (
+{Object.keys(ingresosPorCategoria).length === 0 ? (
 <div className="empty">No hay ingresos por categoría</div>
 ) : (
-Object.entries(ingresosPorCategoria).map(([cat, total], i) => (
-<div key={i}>{cat} - L.{total}</div>
-))
+<>
+<div style={{width:"400px", margin:"auto"}}>
+<Bar data={dataCategorias} options={opcionesCategorias}/>
+</div>
+
+<div style={{marginTop:"15px"}}>
+{Object.entries(ingresosPorCategoria).map(([cat,total],i)=>(
+<div key={i}>
+<strong>{cat}</strong> : L.{total}
+</div>
+))}
+</div>
+</>
 )}
 </section>
+<section className="box">
+<h2> Productos Más Vendidos</h2>
+{productosMasVendidos.length === 0 ? (
+<div className="empty">No hay datos suficientes</div>
+) : (
+<div style={{width:"500px", margin:"auto"}}>
+<Bar data={dataProductosVendidos} />
+</div>
+)}
 
+<p style={{marginTop:"10px", fontStyle:"italic"}}>
+{recomendacionIA}
+</p>
+
+</section>
 <section className="box">
 <h2>Órdenes Recientes</h2>
 {ordenes.length === 0 ? (
@@ -385,4 +518,4 @@ ordenes.map((o, i) => (
   );
 };
 
-export default PanelProductor;
+export default PanelProductor

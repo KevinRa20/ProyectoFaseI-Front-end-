@@ -1,171 +1,217 @@
-:root {
-  --primary: #ff6b35;
-  --secondary: #004e64;
-  --accent: #00c9a7;
-  --light: #f9f9f9;
-  --dark: #1f2937;
+/* FONDO GENERAL */
+body{
+  background: linear-gradient(120deg,#f1f8e9,#fffde7);
+  font-family: 'Segoe UI', sans-serif;
 }
 
-/* CONTENEDORES GENERALES */
-.carrito, .historial-container {
-  max-width: 800px;
-  margin: auto;
-  background: white;
-  padding: 25px;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  animation: fadeIn 0.6s ease;
+/* CONTENEDORES */
+.carrito,
+.historial-container{
+  background:#f5f5dc;
+  padding:30px;
+  border-radius:14px;
+  max-width:600px;
+  margin:auto;
+  box-shadow:0px 10px 25px rgba(0,0,0,0.12);
+  animation:fadeSlide 0.6s ease;
 }
 
-h2 {
-  text-align: center;
-  color: var(--secondary);
-  margin-bottom: 20px;
+/* ANIMACION DE ENTRADA */
+@keyframes fadeSlide{
+  from{
+    opacity:0;
+    transform:translateY(20px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* TITULOS */
+h2,h3{
+  color:#2e7d32;
+  margin-bottom:15px;
 }
 
 /* ITEMS DEL CARRITO */
-.carrito div {
-  display: flex;
-  justify-content: space-between;
-  padding: 12px;
-  border-bottom: 1px solid #eee;
+.carrito div{
+  background:white;
+  padding:14px;
+  margin-bottom:10px;
+  border-radius:10px;
+  border-left:6px solid #66bb6a;
+  transition:all 0.3s ease;
 }
 
-.carrito p {
-  margin: 0;
-  font-weight: 500;
+/* HOVER PRODUCTOS */
+.carrito div:hover{
+  transform:scale(1.03);
+  box-shadow:0px 6px 15px rgba(0,0,0,0.15);
 }
 
 /* BOTONES */
-button {
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  color: white;
-  border: none;
-  padding: 12px 18px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: bold;
-  margin-top: 15px;
+button{
+  padding:10px 18px;
+  margin:8px 5px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:all 0.25s ease;
 }
 
-button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+/* EFECTO PRESION */
+button:active{
+  transform:scale(0.95);
 }
 
-.btn-secundario {
-  background: var(--secondary);
+/* FINALIZAR COMPRA */
+button:first-of-type{
+  background:#f57c00;
+  color:white;
 }
 
-/* HISTORIAL */
-.pedido-card {
-  background: var(--light);
-  padding: 15px;
-  border-radius: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-  animation: slideUp 0.5s ease;
+button:first-of-type:hover{
+  background:#ef6c00;
+  transform:translateY(-2px);
+  box-shadow:0 4px 10px rgba(0,0,0,0.2);
 }
 
-.pedido-info strong {
-  color: var(--primary);
-  font-size: 1.1em;
+/* VOLVER */
+button:last-of-type{
+  background:#66bb6a;
+  color:white;
 }
 
-.pedido-info span {
-  display: block;
-  color: gray;
-  font-size: 0.85em;
+button:last-of-type:hover{
+  background:#43a047;
 }
 
-/* SELECT ESTADO */
-select {
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  background: white;
+/* CONFIRMAR */
+.modal-content button:nth-child(1){
+  background:#2e7d32;
+  color:white;
+}
+
+.modal-content button:nth-child(1):hover{
+  background:#1b5e20;
+}
+
+/* CANCELAR */
+.modal-content button:nth-child(2){
+  background:#d32f2f;
+  color:white;
+}
+
+.modal-content button:nth-child(2):hover{
+  background:#b71c1c;
 }
 
 /* MODAL */
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  animation: fadeIn 0.4s ease;
+.modal{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.45);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  animation:fadeIn 0.3s ease;
 }
 
-.modal-content {
-  background: white;
-  padding: 30px;
-  border-radius: 18px;
-  width: 90%;
-  max-width: 400px;
-  animation: scaleIn 0.4s ease;
+/* ANIMACION MODAL */
+@keyframes fadeIn{
+  from{opacity:0;}
+  to{opacity:1;}
 }
 
-.modal-content h2 {
-  margin-bottom: 15px;
+/* CONTENIDO MODAL */
+.modal-content{
+  background:white;
+  padding:25px;
+  border-radius:12px;
+  width:350px;
+  box-shadow:0px 10px 30px rgba(0,0,0,0.2);
+  animation:modalPop 0.35s ease;
+}
+
+/* POP MODAL */
+@keyframes modalPop{
+  0%{
+    transform:scale(0.7);
+    opacity:0;
+  }
+  100%{
+    transform:scale(1);
+    opacity:1;
+  }
 }
 
 /* INPUTS */
-.modal-content input,
-.modal-content select {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  margin-bottom: 12px;
-  transition: border 0.3s ease;
+input,select{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  border-radius:6px;
+  border:1px solid #ccc;
+  outline:none;
+  transition:all 0.2s ease;
 }
 
-.modal-content input:focus,
-.modal-content select:focus {
-  outline: none;
-  border-color: var(--primary);
+/* INPUT INTERACTIVO */
+input:focus,
+select:focus{
+  border-color:#66bb6a;
+  box-shadow:0 0 8px rgba(102,187,106,0.6);
+  transform:scale(1.02);
 }
 
-/* RESUMEN */
-.resumen {
-  background: white;
-  padding: 25px;
-  border-radius: 16px;
-  text-align: center;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  animation: fadeIn 0.6s ease;
+/* HISTORIAL */
+.pedido-card{
+  background:white;
+  border-radius:10px;
+  padding:15px;
+  margin:10px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-left:6px solid #2e7d32;
+  transition:all 0.3s ease;
 }
 
-.resumen p {
-  font-size: 1.1em;
-  margin: 10px 0;
+.pedido-card:hover{
+  transform:translateX(6px);
+  box-shadow:0px 5px 15px rgba(0,0,0,0.15);
 }
 
-/* ANIMACIONES */
-@keyframes fadeIn {
-  from { opacity: 0 }
-  to { opacity: 1 }
+.pedido-info strong{
+  font-size:18px;
+  color:#2e7d32;
 }
 
-@keyframes scaleIn {
-  from { transform: scale(0.8); opacity: 0 }
-  to { transform: scale(1); opacity: 1 }
+.pedido-info span{
+  display:block;
+  font-size:13px;
+  color:#666;
 }
 
-@keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0 }
-  to { transform: translateY(0); opacity: 1 }
+/* SELECT */
+.pedido-status select{
+  padding:6px;
+  border-radius:5px;
+  border:1px solid #ccc;
 }
 
-/* RESPONSIVE */
-@media (max-width: 600px) {
-  .pedido-card {
-    flex-direction: column;
-    gap: 10px;
-    text-align: center;
-  }
+/* BOTON SECUNDARIO */
+.btn-secundario{
+  background:#8d6e63;
+  color:white;
+}
+
+.btn-secundario:hover{
+  background:#6d4c41;
+  transform:translateY(-2px);
 }

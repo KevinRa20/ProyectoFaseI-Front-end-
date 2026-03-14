@@ -32,8 +32,15 @@ function Register() {
       });
 
       const data = await res.json();
-
+      
       if (res.ok) {
+    localStorage.setItem("usuario",JSON.stringify({
+    name: form.name.toLowerCase(),
+    email: form.email.toLowerCase(),
+    password: form.password.toLowerCase(),
+    rol: data.rol
+    })
+  );
         alert("Usuario registrado correctamente");
         setForm({ name: "", email: "", password: "", rol: "" });
         navigate("/login");
@@ -45,6 +52,7 @@ function Register() {
       console.error("Error:", error);
       alert("Error al conectar con el servidor");
     }
+   
   };
 
   return (
@@ -66,58 +74,55 @@ placeholder="Ingresa tu nombre"
 value={form.name}
 onChange={handleChange}
 required
-            />
-          </div>
+/>
+</div>
 
-          <div className="form-group">
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Ingresa tu correo"
-              value={form.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
+<div className="form-group">
+<label>Email</label>
+<input
+type="email"
+name="email"
+placeholder="Ingresa tu correo"
+value={form.email}
+onChange={handleChange}
+required
+/>
+</div>
 
-          <div className="form-group">
-            <label>Contraseña</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Crea una contraseña"
-              value={form.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Que rol seras?</label>
-            <select
-              name="rol"
-              value={form.rol}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Seleccione un rol</option>
-              <option value="productor">Productor</option>
-              <option value="comprador">Comprador</option>
-            </select>
-          </div>
-
-          <button type="submit" className="btn-completeprofile">
-            Registrarse
-          </button>
-        </form>
-
-        <p>
-          ¿Ya tienes cuenta? <Link to="/login">Volver al Login</Link>
-        </p>
-      </div>
-    </div>
-  );
+<div className="form-group">
+<label>Contraseña</label>
+<input
+type="password"
+name="password"
+placeholder="Crea una contraseña"
+value={form.password}
+onChange={handleChange}
+required
+/>
+</div>
+<div className="form-group">
+<label>Que rol seras?</label>
+ <select
+  name="rol"
+  value={form.rol}
+  onChange={handleChange}
+  required
+>
+<option value="">Seleccione un rol</option>
+<option value="productor">Productor</option>
+<option value="comprador">Comprador</option>
+</select>
+</div>
+<button type="submit" className="btn-completeprofile">
+ Registrarse
+</button>
+</form>
+<p>
+¿Ya tienes cuenta? <Link to="/login">Volver al Login</Link>
+</p>
+</div>
+</div>
+);
 }
 
 export default Register;

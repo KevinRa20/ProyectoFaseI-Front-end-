@@ -36,6 +36,14 @@ function Login() {
     alert(data.msg);
 
     if (res.ok) {
+  // guardar usuario en localStorage
+  localStorage.setItem(
+    "usuario",
+    JSON.stringify({
+      email: form.email.toLowerCase(),
+      rol: data.rol
+    })
+  );
       setForm({ email: "", password: "" });
 
       if (data.rol === "productor") {

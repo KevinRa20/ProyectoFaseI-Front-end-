@@ -7,6 +7,8 @@ import "../style/Compras.css";
   const [carrito, setCarrito] = useState([]);
   const [resumenCompra, setResumenCompra] = useState(null);
   const [historial, setHistorial] = useState([]);
+  const [mostrarPago, setMostrarPago] = useState(false);
+  const [valorPagar, setValorPagar] = useState("");
 
   const [datosComprador, setDatosComprador] = useState({
     nombre: "",
@@ -45,27 +47,65 @@ import "../style/Compras.css";
     alert("El producto se agregó al carrito correctamente");
   };
 
-  const finalizarCompra = () => {
-    const fecha = new Date().toLocaleString();
-    const totalCompra = carrito.reduce((acc, item) => acc + item.total, 0);
+  const finalizarCompra = async () => {
+  const fecha = new Date().toLocaleString();
+  const totalCompra = carrito.reduce((acc, item) => acc + item.total, 0);
 
-    const resumen = {
-      id: Date.now(),
-      comprador: carrito[0].comprador.nombre,
-      productos: carrito,
-      totalCompra,
-      fecha,
-      estado: "En proceso"
-    };
-
-    const nuevoHistorial = [...historial, resumen];
-    setHistorial(nuevoHistorial);
-    localStorage.setItem("historialCompras", JSON.stringify(nuevoHistorial));
-
-    setResumenCompra(resumen);
-    setCarrito([]);
-    setVista("resumen");
+  const resumen = {
+    id: Date.now(),
+    comprador: carrito[0].comprador.nombre,
+    productos: carrito,
+    totalCompra,
+    fecha,
+    estado: "En proceso"
   };
+
+  try {
+
+    for (const item of carrito) {
+      await fetch("http://localhost:5000/api/compras", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          nombreComprador: item.comprador.nombre,
+          producto: item.nombre,
+          cantidad: item.cantidad,
+          precio: item.precio,
+          total: item.total
+        })
+      });
+    }
+
+  } catch (error) {
+    console.error("Error al registrar la compra:", error);
+  }
+
+  const nuevoHistorial = [...historial, resumen];
+  setHistorial(nuevoHistorial);
+  localStorage.setItem("historialCompras", JSON.stringify(nuevoHistorial));
+
+  const notificaciones = JSON.parse(localStorage.getItem("notificaciones")) || [];
+
+  const nuevaNotificacion = {
+    id: Date.now(),
+    comprador: carrito[0].comprador,
+    productos: carrito,
+    fecha,
+    leido: false
+  };
+
+  localStorage.setItem(
+    "notificaciones",
+    JSON.stringify([...notificaciones, nuevaNotificacion])
+  );
+
+  setResumenCompra(resumen);
+  setCarrito([]);
+  setMostrarPago(false);
+  setVista("resumen");
+};
 
   const cambiarEstado = (id, nuevoEstado) => {
     const actualizado = historial.map(p =>
@@ -80,6 +120,11 @@ import "../style/Compras.css";
 {vista === "carrito" && (
 <div className="carrito">
 <h2>Detalle de la Compra</h2>
+
+{carrito.length === 0 ? (
+  <p>Tu carrito está vacío</p>
+) : (
+  <>
 {carrito.map((item, i) => (
 <div key={i}>
 <p>{item.nombre}</p>
@@ -87,8 +132,26 @@ import "../style/Compras.css";
 <p>Total: L.{item.total}</p>
 </div>
 ))}
-<button onClick={finalizarCompra}>Finalizar compra</button>
+<button onClick={() => setMostrarPago(true)}>Finalizar compra</button>
+  </>
+)}
+
 <button onClick={() => setVista("productos")}>Volver</button>
+</div>
+)}
+{mostrarPago && (
+<div className="modal">
+<div className="modal-content">
+<h3>Ingrese el valor que pagará</h3>
+<input
+type="number"
+placeholder="Valor a pagar"
+value={valorPagar}
+onChange={(e) => setValorPagar(e.target.value)}
+/>
+<button onClick={finalizarCompra}>Confirmar pago</button>
+<button onClick={() => setMostrarPago(false)}>Cancelar</button>
+</div>
 </div>
 )}
 
@@ -159,8 +222,8 @@ onChange={e => setCantidad(e.target.value)} />
 </div>
 </div>
 )}
-    </>
-  );
+</>
+);
 };
 
 export default Compras;

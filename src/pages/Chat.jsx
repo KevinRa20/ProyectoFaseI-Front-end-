@@ -1,55 +1,76 @@
 import React, { useEffect, useRef, useState } from "react";
-import io from "socket.io-client";
+import { io } from "socket.io-client";
 import "../style/Chat.css";
 
-// conexión única
-const socket = io("http://localhost:3001");
-
 const Chat = ({ usuario }) => {
+
+  const socketRef = useRef(null);
+
   const [mensaje, setMensaje] = useState("");
   const [destino, setDestino] = useState("");
   const [mensajes, setMensajes] = useState([]);
 
   const chatEndRef = useRef(null);
 
-  // registrar usuario
+  // conectar socket
   useEffect(() => {
+
     if (!usuario) return;
 
-    socket.emit("registrarUsuario", usuario);
+    socketRef.current = io("http://localhost:3001");
 
-    const recibirMensaje = (data) => {
+    socketRef.current.emit("registrarUsuario", usuario);
+
+    socketRef.current.on("recibirMensaje", (data) => {
+
       setMensajes((prev) => [...prev, data]);
-    };
 
-    socket.on("recibirMensaje", recibirMensaje);
+    });
 
     return () => {
-      socket.off("recibirMensaje", recibirMensaje);
+      socketRef.current.disconnect();
     };
+
   }, [usuario]);
+
 
   // scroll automático
   useEffect(() => {
+
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+
   }, [mensajes]);
 
+
   const enviarMensaje = () => {
+
     if (!mensaje.trim() || !destino.trim()) return;
 
-    const data = {
+    const nuevoMensaje = {
       de: usuario,
       para: destino,
-      texto: mensaje.trim(),
-      fecha: new Date().toLocaleTimeString()
+      texto: mensaje,
+      fecha: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit"
+      })
     };
 
-    socket.emit("enviarMensaje", data);
-
-    setMensajes((prev) => [...prev, data]);
+    socketRef.current.emit("enviarMensaje", nuevoMensaje);
 
     setMensaje("");
   };
+
+
+  const handleKeyDown = (e) => {
+
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      enviarMensaje();
+    }
+
+  };
+
 
   const mensajesFiltrados = mensajes.filter(
     (m) =>
@@ -57,58 +78,61 @@ const Chat = ({ usuario }) => {
       (m.de === destino && m.para === usuario)
   );
 
+
   return (
-    <div className="chat-container">
+<div className="chat-wrapper">
 
-      <div className="usuarios">
-        <h3>Chat con:</h3>
+<div className="chat-container">
+ <header className="chat-header">
+<div className="user-info">
+<label>Negociando con:</label>
+<input
+className="input-destination"
+placeholder="Ej. Juan"
+value={destino}
+onChange={(e) => setDestino(e.target.value)}
+/>
+</div>
+</header>
 
-        <input
-          placeholder="Nombre del Productor o Comprador"
-          value={destino}
-          onChange={(e) => setDestino(e.target.value)}
-        />
-      </div>
 
-      <div className="chat-box">
-
-        <div className="mensajes">
-
-          {mensajesFiltrados.map((m, i) => (
-            <div
-              key={i}
-              className={`msg ${m.de === usuario ? "propio" : "otro"}`}
-            >
-              <strong>{m.de}</strong>
-
-              <p>{m.texto}</p>
-
-              <span>{m.fecha}</span>
-            </div>
-          ))}
-
-          <div ref={chatEndRef}></div>
-
-        </div>
-
-        <div className="input-chat">
-
-          <input
-            value={mensaje}
-            onChange={(e) => setMensaje(e.target.value)}
-            placeholder="Escribe un mensaje..."
-            onKeyDown={(e) => e.key === "Enter" && enviarMensaje()}
-          />
-
-          <button onClick={enviarMensaje}>
-            Enviar
-          </button>
-
-        </div>
-
-      </div>
-
-    </div>
+<div className="chat-box">
+<div className="mensajes-area">
+{mensajesFiltrados.length === 0 && destino && (
+<p className="chat-empty">
+Inicia una conversación con {destino}
+</p>
+)}
+{mensajesFiltrados.map((m, index) => (
+<div
+key={index}
+className={`msg-bubble ${m.de === usuario ? "propio" : "otro"}`}
+>
+<div className="msg-content">
+<p>{m.texto}</p>
+<span className="msg-time">{m.fecha}</span>
+</div>
+</div>
+))}
+<div ref={chatEndRef}></div>
+</div>
+<div className="input-area">
+<textarea
+className="main-textarea"
+value={mensaje}
+onChange={(e) => setMensaje(e.target.value)}
+onKeyDown={handleKeyDown}
+placeholder="Escribe tu mensaje..."
+rows="2"
+/>
+<button
+className="btn-send2"
+onClick={enviarMensaje}
+ >Enviar </button>
+</div>
+</div>
+</div>
+</div>
   );
 };
 

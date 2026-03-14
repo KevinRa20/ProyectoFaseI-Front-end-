@@ -103,7 +103,7 @@
 }
 
 /* --- BOTÓN CON ICONO --- */
-.btn-send {
+.btn-send1 {
   background: #2e7d32;
   color: white;
   padding: 16px;
@@ -120,13 +120,13 @@
   margin-top: 10px;
 }
 
-.btn-send:hover {
+.btn-send1:hover {
   background: #1b5e20;
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
 }
 
-.btn-send:active {
+.btn-send1:active {
   transform: translateY(0);
 }
 
