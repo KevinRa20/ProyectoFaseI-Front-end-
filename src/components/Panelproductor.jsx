@@ -91,38 +91,60 @@ const notificacionesNoLeidas = notificaciones.filter(n => !n.leido).length;
   localStorage.setItem("perfilProductor", JSON.stringify(perfil));
 }, [perfil]);
 
- useEffect(() => {
+useEffect(() => {
+
+  const cargarOrdenes = () => {
+
     const data = JSON.parse(localStorage.getItem("ordenes")) || [];
-    setOrdenes(data);
-  }, []);
+
+    const ordenesProductor = data.filter(
+      o => o.productor === perfil.productor
+    );
+
+    setOrdenes(ordenesProductor);
+
+  };
+
+  cargarOrdenes();
+
+  const listener = () => {
+    cargarOrdenes();
+  };
+
+  window.addEventListener("ordenActualizada", listener);
+
+  return () => {
+    window.removeEventListener("ordenActualizada", listener);
+  };
+
+}, [perfil.productor]);
 
 useEffect(() => {
   if (ordenes.length === 0) return;
 
   setProductos(prevProductos => {
-const actualizados = prevProductos.map(p => {
-let vendidoExtra = 0;
-let ingresoExtra = 0;
 
-ordenes.forEach(o => {
-if (o.producto === p.nombre) {
-vendidoExtra += Number(o.cantidad);
-ingresoExtra += Number(o.cantidad) * Number(o.precio);
-}
-});
+    return prevProductos.map(p => {
 
-if (vendidoExtra === 0) return p;
-return {
-...p,
-vendido: (Number(p.vendido) || 0) + vendidoExtra,
-ingresos: (Number(p.ingresos) || 0) + ingresoExtra,
-stock: Math.max((Number(p.stock) || 0) - vendidoExtra, 0)
-};
-});
-return actualizados;
+      let vendido = 0;
+      let ingresos = 0;
+
+      ordenes.forEach(o => {
+        if (o.producto === p.nombre && o.estado === "aceptado") {
+          vendido += Number(o.cantidad);
+          ingresos += Number(o.cantidad) * Number(o.precio);
+        }
+      });
+
+      return {
+         ...p,
+  vendido,
+  ingresos
+      };
+
+    });
+
   });
-
-  localStorage.removeItem("ordenes");
 
 }, [ordenes]);
 
@@ -171,38 +193,41 @@ return actualizados;
   setMostrarForm(false);
 };
  // Calcular ingresos por categoría
-const ingresosPorCategoria = {}
-productos.forEach((p) => {
-  const categoria = p.categoria || "Sin categoría";
-  const ingresos = Number(p.ingresos) || 0;
+const ingresosPorCategoria = productos.reduce((acc, producto) => {
+  const categoria = producto.categoria || "Sin categoría";
+  const ingresos = Number(producto.ingresos) || 0;
 
-  if (ingresosPorCategoria[categoria]) {
-    ingresosPorCategoria[categoria] += ingresos;
-  } else {
-    ingresosPorCategoria[categoria] = ingresos;
-  }
-});
+  acc[categoria] = (acc[categoria] || 0) + ingresos;
+
+  return acc;
+}, {});
+const categoriasOrdenadas = Object.entries(ingresosPorCategoria)
+.sort((a,b) => b[1] - a[1]);
 const dataCategorias = {
-  labels: Object.keys(ingresosPorCategoria),
-  datasets: [
+labels: categoriasOrdenadas.map(c => c[0]),
+datasets: [
 {
 label: "Ingresos por Categoría (L.)",
-data: Object.values(ingresosPorCategoria),
- backgroundColor: [
+data: categoriasOrdenadas.map(c => c[1]),
+backgroundColor: [
 "#4CAF50",
 "#FF9800",
 "#2196F3",
 "#9C27B0",
 "#E91E63",
-"#795548"
+"#795548",
+"#00BCD4",
+"#8BC34A"
 ],
-borderRadius: 6
+borderRadius: 12,
+barThickness: 40
 }
-  ]
+]
 };
 const opcionesCategorias = {
 responsive: true,
-indexAxis: "y", // barra horizontal
+maintainAspectRatio: false,
+indexAxis: "y",
 plugins: {
 legend: {
 display: false
@@ -210,49 +235,39 @@ display: false
 tooltip: {
 callbacks: {
 label: function(context) {
-return `L. ${context.raw}`;
-}
-}
-}
-},
+return `L. ${context.raw.toLocaleString()}`;
+}}}},
 scales: {
 x: {
 ticks: {
 callback: function(value) {
-return "L." + value;
-}
-}
-}
-}
-};
+return "L. " + value.toLocaleString();
+},
+font: {
+size: 14
+}}},
+y: {
+ticks: {
+font: {
+size: 14}}}}};
 //Ingresos por productos
-const ingresosPorProducto = {};
-productos.forEach(p => {
-  ingresosPorProducto[p.nombre] = Number(p.ingresos) || 0;
-});
-const reseñas = JSON.parse(localStorage.getItem("reseñas")) || [];
-const ratingPromedio = (nombreProducto) => {
-  const lista = reseñas.filter(r => r.producto === nombreProducto);
-
-  if (lista.length === 0) return "N/A";
-
-  const promedio =
-    lista.reduce((sum, r) => sum + r.rating, 0) / lista.length;
-
-  return promedio.toFixed(1);
-};
+const ingresosPorProducto = Object.fromEntries(
+  productos.map(p => [p.nombre, Number(p.ingresos) || 0])
+);
   // Calcular ingresos totales
   const ingresosTotales = productos.reduce((total, p) => {
    return total + (Number(p.ingresos) || 0);
 }, 0);
-const ticketPromedio =
-totalOrdenes === 0 ? 0 : (ingresosTotales / totalOrdenes).toFixed(2);
-// ===== MODULO IA: ANALISIS DE PRODUCTOS =====
+//Calculo del total de productos vendidos
+const totalProductosVendidos = productos.reduce((total, p) => {
+  return total + (Number(p.vendido) || 0);
+}, 0);
+// MODULO IA: ANALISIS DE PRODUCTOS
 
 // ordenar productos por cantidad vendida
 const productosMasVendidos = [...productos]
 .sort((a,b) => (b.vendido || 0) - (a.vendido || 0))
-.slice(0,3);
+.slice(0,5);
 // Datos para grafica productos mas vendidos
 const dataProductosVendidos = {
 labels: productosMasVendidos.map(p => p.nombre),
@@ -430,8 +445,8 @@ L.{p.precio} / {p.unidad}
 <p>{productos.length}</p>
 </div>
 <div className="card orange">
-<h3>Ticket Promedio</h3>
-<p>L.{ticketPromedio}</p>
+<h3>Productos Vendidos</h3>
+<p>{totalProductosVendidos}</p>
 </div>
 </section>
 
@@ -445,7 +460,6 @@ L.{p.precio} / {p.unidad}
 <th>Vendido</th>
 <th>Ingresos</th>
 <th>Stock</th>
-<th>Calificación</th>
 </tr>
 </thead>
 <tbody>
@@ -460,7 +474,6 @@ L.{p.precio} / {p.unidad}
 {p.stock} {p.unidad}
 </span>
 </td>
-<td>{ratingPromedio(p.nombre)}</td>
 </tr>
 ))}
 </tbody>
@@ -473,7 +486,7 @@ L.{p.precio} / {p.unidad}
 <div className="empty">No hay ingresos por categoría</div>
 ) : (
 <>
-<div style={{width:"400px", margin:"auto"}}>
+<div style={{width:"900px",height:"450px", margin:"auto"}}>
 <Bar data={dataCategorias} options={opcionesCategorias}/>
 </div>
 
@@ -492,7 +505,7 @@ L.{p.precio} / {p.unidad}
 {productosMasVendidos.length === 0 ? (
 <div className="empty">No hay datos suficientes</div>
 ) : (
-<div style={{width:"500px", margin:"auto"}}>
+<div style={{width:"600px",height:"450px", margin:"auto"}}>
 <Bar data={dataProductosVendidos} />
 </div>
 )}

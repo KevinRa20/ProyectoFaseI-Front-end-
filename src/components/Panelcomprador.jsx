@@ -39,9 +39,11 @@ import axios from "axios";
 
   const orden = {
     producto: producto.nombre,
+    productor: producto.productor,
     categoria: producto.categoria,
     precio: Number(producto.precio),
     cantidad: Number(cantidad),
+    estado: "pendiente",
     fecha: new Date().toLocaleString()
   };
 

@@ -16,7 +16,25 @@ const NotificacionesProductor = () => {
     setPedidos(actualizados);
     localStorage.setItem("notificaciones", JSON.stringify(actualizados));
   };
+const aceptarPedido = (id) => {
 
+  const ordenes = JSON.parse(localStorage.getItem("ordenes")) || [];
+
+  const nuevasOrdenes = ordenes.map(o => {
+    if (o.id === id) {
+      return { ...o, estado: "aceptado" };
+    }
+    return o;
+  });
+
+  localStorage.setItem("ordenes", JSON.stringify(nuevasOrdenes));
+
+};
+const contactarWhatsApp = (telefono, nombre, id) => {
+  const mensaje = `Hola ${nombre}, soy el productor. Estoy contactándote sobre tu pedido #${id}.`;
+  const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
+  window.open(url, "_blank");
+};
   return (
   <div className="notificaciones-wrapper">
   <div className="notificaciones-container">
@@ -61,7 +79,6 @@ pedidos.map((p) => (
 <div key={i} className="producto-item">
 <span>{prod.nombre} x {prod.cantidad}</span>
 <span className="precio-tag">L.{prod.precio}</span>
-<span className="resumencompra">L.{prod.totalcompra}</span>
 </div>
  ))}
 </div>
@@ -69,9 +86,32 @@ pedidos.map((p) => (
 </div>
 <div className="pedido-footer">
 {!p.leido ? (
-<button className="btn-marcar" onClick={() => marcarLeido(p.id)}>Aceptar Pedido</button>
+<button
+className="btn-marcar"
+onClick={() => {
+marcarLeido(p.id);
+aceptarPedido(p.id);
+}}
+>
+Aceptar Pedido
+</button>
 ) : (
+<div className="acciones-pedido">
 <span className="gestionado-check">✓ Aceptado</span>
+
+<button
+className="btn-whatsapp"
+onClick={() =>
+contactarWhatsApp(
+p.comprador.telefono,
+p.comprador.nombre,
+p.id
+)
+}
+>
+Contactar por WhatsApp
+</button>
+</div>
 )}
 </div>
 </div>
