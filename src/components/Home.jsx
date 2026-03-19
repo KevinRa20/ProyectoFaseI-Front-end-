@@ -2,6 +2,41 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "../style/Home.css";
 
+const handleSubscribe = async (priceId, plan) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (!user) {
+    window.location.href = "/login";
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:3000/create-checkout-session", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        priceId,
+        userId: user.id,
+        plan
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      console.error("Error:", data);
+      alert("Error al procesar el pago");
+    }
+
+  } catch (error) {
+    console.error(error);
+    alert("Error de conexión con el servidor");
+  }
+};
 function Home() {
   return (
 <div className="home-container">
@@ -117,8 +152,12 @@ Realiza pedidos y coordina ventas directamente con el productor.
 <li>Mayor visibilidad en búsquedas</li>
 <li>Estadísticas de ventas</li>
 </ul>
-<Link to="/login" className="btn-plan"> Obtener plan
-</Link>
+<button 
+  className="btn-plan"
+  onClick={() => handleSubscribe("price_1TCPISGPea1HEkaixMefnYNU", "standard")}
+>
+Obtener plan
+</button>
 </div>
 <div className="pricing-card">
 <h3>Plan Premium</h3>
@@ -128,7 +167,11 @@ Realiza pedidos y coordina ventas directamente con el productor.
 <li>Promoción destacada</li>
 <li>Soporte prioritario</li>
 </ul>
-<Link to="/login" className="btn-plan">Obtener plan</Link>
+<button 
+className="btn-plan"
+onClick={() => handleSubscribe("price_1TCPJIGPea1HEkaim2g1oJiT", "premium")}>
+Obtener plan
+</button>
 </div>
 </div>
 </section>
@@ -157,9 +200,11 @@ Obtener plan
 <li>Acceso a productores verificados</li>
 <li>Prioridad en pedidos</li>
 </ul>
-<Link to="/login" className="btn-plan">
+<button 
+className="btn-plan"
+onClick={() => handleSubscribe("price_1TCPRjGPea1HEkai1QMsgElg", "buyer")}>
 Obtener plan
-</Link>
+</button>
 </div>
 </div>
 </section>

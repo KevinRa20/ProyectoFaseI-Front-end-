@@ -1,6 +1,4 @@
-/* =========================
-RESET Y BASE
-========================= */
+/*RESET Y BASE */
 
 *{
 margin:0;
@@ -14,9 +12,7 @@ background:#f5f7f6;
 color:#333;
 }
 
-/* =========================
-CONTENEDOR PRINCIPAL
-========================= */
+/* CONTENEDOR PRINCIPAL*/
 
 .panel{
 max-width:1300px;
@@ -24,9 +20,7 @@ margin:auto;
 padding:20px;
 }
 
-/* =========================
-HEADER
-========================= */
+/* HEADER*/
 
 .header{
 display:flex;
@@ -98,9 +92,7 @@ margin-left:-10px;
 margin-top:-5px;
 }
 
-/* =========================
-MENU
-========================= */
+/* MENU*/
 
 .menu{
 display:flex;
@@ -116,6 +108,7 @@ border-radius:6px;
 cursor:pointer;
 font-weight:500;
 transition:.3s;
+color:#2E7D32
 }
 
 .menu button:hover{
@@ -127,9 +120,7 @@ background:#2E7D32;
 color:white;
 }
 
-/* =========================
-BOX SECCIONES
-========================= */
+/* BOX SECCIONES*/
 
 .box{
 background:white;
@@ -144,9 +135,7 @@ margin-bottom:15px;
 color:#2E7D32;
 }
 
-/* =========================
-CATALOGO
-========================= */
+/* CATALOGO*/
 
 .catalogo{
 display:grid;
@@ -216,9 +205,7 @@ background:#ffcdd2;
 color:#b71c1c;
 }
 
-/* =========================
-ACCIONES
-========================= */
+/* ACCIONES*/
 
 .acciones{
 margin-top:10px;
@@ -253,9 +240,7 @@ color:white;
 background:#b71c1c;
 }
 
-/* =========================
-CARDS DASHBOARD
-========================= */
+/* CARDS DASHBOARD*/
 
 .cardsproductor{
 display:grid;
@@ -289,9 +274,7 @@ font-weight:bold;
 .purple{background:#ab61da;}
 .orange{background:#e8b665;}
 
-/* =========================
-TABLA
-========================= */
+/* TABLA */
 
 table{
 width:100%;
@@ -314,9 +297,7 @@ tr:hover{
 background:#fafafa;
 }
 
-/* =========================
-FORMULARIOS
-========================= */
+/* FORMULARIOS*/
 
 .modal{
 position:fixed;
@@ -389,9 +370,7 @@ cursor:pointer;
 background:#1B5E20;
 }
 
-/* =========================
-MENSAJE VACIO
-========================= */
+/* MENSAJE VACIO*/
 
 .empty{
 text-align:center;
@@ -400,9 +379,7 @@ color:#777;
 font-style:italic;
 }
 
-/* =========================
-GRAFICAS
-========================= */
+/* GRAFICAS*/
 
 canvas{
 background:#fff;
@@ -410,9 +387,7 @@ border-radius:8px;
 padding:10px;
 }
 
-/* =========================
-RESPONSIVE
-========================= */
+/* RESPONSIVE */
 
 @media(max-width:768px){
 

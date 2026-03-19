@@ -7,7 +7,9 @@ function Register() {
     name: "",
     email: "",
     password: "",
-    rol: ""
+    rol: "",
+    plan: "basic",
+    priceId: null
   });
 
   const navigate = useNavigate();
@@ -20,40 +22,46 @@ function Register() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      const res = await fetch("http://localhost:5000/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(form)
-      });
+  try {
+    const res = await fetch("http://localhost:5000/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(form)
+    });
 
-      const data = await res.json();
-      
-      if (res.ok) {
-    localStorage.setItem("usuario",JSON.stringify({
-    name: form.name.toLowerCase(),
-    email: form.email.toLowerCase(),
-    password: form.password.toLowerCase(),
-    rol: data.rol
-    })
-  );
-        alert("Usuario registrado correctamente");
-        setForm({ name: "", email: "", password: "", rol: "" });
-        navigate("/login");
-      } else {
-        alert(data.msg || "Error al registrar usuario");
+    const data = await res.json();
+
+    if (res.ok) {
+
+      //  SI HAY URL → IR A STRIPE
+      if (data.url) {
+        window.location.href = data.url;
+        return;
       }
 
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Error al conectar con el servidor");
+      //  PLAN GRATIS
+      localStorage.setItem("usuario", JSON.stringify({
+        name: form.name,
+        email: form.email,
+        rol: form.rol
+      }));
+
+      alert("Usuario registrado correctamente");
+      navigate("/login");
+
+    } else {
+      alert(data.msg || "Error al registrar usuario");
     }
-   
-  };
+
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Error al conectar con el servidor");
+  }
+};
 
   return (
 <div className="register-container">
@@ -113,6 +121,52 @@ required
 <option value="comprador">Comprador</option>
 </select>
 </div>
+{form.rol && (
+<div className="form-group">
+<label>Selecciona un plan</label>
+<select
+name="plan"
+value={form.plan}
+onChange={(e) => {
+const selectedPlan = e.target.value;
+
+let priceId = null;
+// PRODUCTOR
+if (selectedPlan === "standard") {
+priceId = "price_1TCPISGPea1HEkaixMefnYNU";
+} else if (selectedPlan === "premium") {
+priceId = "price_1TCPJIGPea1HEkaim2g1oJiT";
+}
+// COMPRADOR
+else if (selectedPlan === "buyer") {
+priceId = "price_1TCPRjGPea1HEkai1QMsgElg";
+}
+setForm({
+...form,
+plan: selectedPlan,
+priceId
+ });
+}}
+>
+{/*  PLAN GRATIS (para ambos) */}
+<option value="basic">Gratis</option>
+{/*  PRODUCTOR */}
+{form.rol === "productor" && (
+<>
+<option value="standard">Productor Standard ($9)</option>
+<option value="premium">Productor Premium ($19)</option>
+</>
+)}
+{/*  COMPRADOR */}
+{form.rol === "comprador" && (
+<>
+<option value="buyer">Comprador Premium ($7)</option>
+</>
+)}
+</select>
+  </div>
+)}
+
 <button type="submit" className="btn-completeprofile">
  Registrarse
 </button>
@@ -121,7 +175,9 @@ required
 ¿Ya tienes cuenta? <Link to="/login">Volver al Login</Link>
 </p>
 </div>
+
 </div>
+
 );
 }
 
