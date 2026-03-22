@@ -32,6 +32,7 @@ import axios from "axios";
   const navigate = useNavigate();
  const usuario = JSON.parse(localStorage.getItem("usuario"));
  const comprador = usuario?.email?.toLowerCase();
+ const planComprador = usuario?.plan || "basico";
   const categorias = ["Todas", "Hortalizas", "Frutas", "Verduras", "Cereales", "Lácteos", "Raíces", "Industriales", "Leguminosas", "Otros"];
   const regiones = ["Todas", "Región Occidental", "Región Noroccidental", "Región Nororiental", "Región Centro Occidental", "Región Centro Oriental", "Región Sur"];
   const precios = ["Todos", 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
@@ -101,7 +102,19 @@ const marcarComoLeidas = async () => {
 
     return cumpleBusqueda && cumpleCategoria && cumpleRegion && cumplePrecio;
   });
+  const obtenerCantidadCarrito = () => {
+  const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  return carrito.length;
+};
  const abrirFormulario = (producto) => { 
+  const cantidadCarrito = obtenerCantidadCarrito();
+
+  //  LIMITACIÓN PLAN BÁSICO
+  if (planComprador === "basico" && cantidadCarrito >= 5) {
+    alert("Tu plan básico solo permite máximo 5 productos en el carrito. Actualiza a Premium para ilimitados.");
+    return;
+  }
+
   setProductoSeleccionado(producto);
   setVista("carrito"); 
   };
@@ -216,7 +229,6 @@ notificaciones.map((n) => (
 )}
 </div>
 )}
-
 {/* BARRA DE BÚSQUEDA */}
 <section className="search-bar">
  <div className="search-input">

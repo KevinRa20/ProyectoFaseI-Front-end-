@@ -46,17 +46,17 @@ opacity:.9;
 text-align: center;
 }
 
-.logout{
+.logout1{
 background:#E53935;
 border:none;
 color:white;
-padding:8px 14px;
+padding:8px 10px;
 border-radius:6px;
 cursor:pointer;
 transition:.3s;
 }
 
-.logout:hover{
+.logout1:hover{
 background:#c62828;
 transform:scale(1.05);
 }

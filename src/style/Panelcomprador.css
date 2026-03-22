@@ -104,22 +104,22 @@
 /* --- BARRA DE BÚSQUEDA Y FILTROS --- */
 .search-bar {
   background: var(--blanco);
-  margin: 20px 5%;
-  padding: 20px;
-  border-radius: 15px;
+  margin: 10px 5%;        /* menos espacio externo */
+  padding: 10px;          /* menos relleno */
+  border-radius: 20px;    /* bordes más pequeños */
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 8px;               /* menos separación entre elementos */
   box-shadow: var(--sombra);
 }
 
 .search-input {
-  flex: 2;
+  flex: 1;                /* reduce el tamaño relativo */
   display: flex;
   align-items: center;
   background: var(--gris-suave);
-  padding: 10px 15px;
-  border-radius: 10px;
+  padding: 6px 10px;      /* más compacto */
+  border-radius: 8px;
   border: 1px solid #ddd;
 }
 
@@ -127,8 +127,9 @@
   border: none;
   background: transparent;
   width: 100%;
-  margin-left: 10px;
+  margin-left: 5px;       /* menos espacio interno */
   outline: none;
+  font-size: 14px;        /* texto más pequeño */
 }
 
 .filters {

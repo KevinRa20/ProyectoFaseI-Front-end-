@@ -11,7 +11,7 @@ const handleSubscribe = async (priceId, plan) => {
   }
 
   try {
-    const response = await fetch("http://localhost:3000/create-checkout-session", {
+    const response = await fetch("http://localhost:5000/create-checkout-session", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

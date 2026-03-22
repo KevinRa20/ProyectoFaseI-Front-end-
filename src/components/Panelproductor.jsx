@@ -15,6 +15,7 @@ ArcElement,
 Tooltip,
 Legend
 );
+
 const PanelProductor = () => {
   const [vista, setVista] = useState("inicio");
   const [editandoIndex, setEditandoIndex] = useState(null);
@@ -24,7 +25,11 @@ const PanelProductor = () => {
   const [notificaciones, setNotificaciones] = useState([]);
   const navigate = useNavigate();
   const [mostrarPerfil, setMostrarPerfil] = useState(false);
-
+  const plan = localStorage.getItem("plan") || "basic";
+  const limiteProductos =
+  plan === "basic" ? 5 :
+  plan === "standard" ? 10 :
+  Infinity;
 const usuario = "productor"; 
 const totalOrdenes = ordenes.length;
 const [perfil, setPerfil] = useState({
@@ -161,6 +166,11 @@ useEffect(() => {
 };
 
   const agregarProducto = () => {
+  //  VALIDACIÓN DE PLAN
+  if (editandoIndex === null && productos.length >= limiteProductos) {
+    alert(`Has alcanzado el límite de tu plan (${limiteProductos} productos). Actualiza tu plan para seguir publicando.`);
+    return;
+  }
   const productoConPerfil = {
     ...nuevoProducto,
     vendido: 0,
@@ -288,6 +298,7 @@ if(productosMasVendidos.length > 0){
 }else{
   recomendacionIA = "Aún no hay suficientes ventas para generar recomendaciones.";
 }
+
   return (
 <div className="panel">
 
@@ -296,7 +307,7 @@ if(productosMasVendidos.length > 0){
 <h1>Agro Commerce</h1>
 <h2>Bienvenido, Has ingresado como productor</h2>
 </div>
-<button className="logout"onClick={() => navigate("/login")}>Salir</button>
+<button className="logout1"onClick={() => navigate("/login")}>Salir</button>
 <img
   className="icono-perfil"
   src={"https://cdn-icons-png.flaticon.com/128/2550/2550260.png"}
@@ -335,6 +346,7 @@ alt="icono-notificaciones"
 {vista === "notificaciones" && <Notificaciones/>}
 {vista === "pedidos" && <NotificacionesProductor />}
 {vista === "chat" && <Chat usuario={usuario} />}
+
 {/* FORMULARIO */}
 {mostrarPerfil && (
 <div className="modal">
@@ -404,7 +416,6 @@ alt="icono-notificaciones"
 </div>
 </div>
 )}
-
 <section className="box">
 <h2>Catálogo de Productos</h2>
 

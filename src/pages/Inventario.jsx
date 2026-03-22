@@ -49,6 +49,7 @@ const Inventario = () => {
   // DELETE
   const eliminar = async (id) => {
     await axios.delete(`${API_URL}/${id}`);
+    alert("Esta seguro de querer eliminar este producto")
     obtenerInventario();
   };
 
@@ -60,6 +61,7 @@ const Inventario = () => {
       fechaCosecha: item.fechaCosecha.split("T")[0],
       estado: item.estado,
     });
+    
     setEditandoId(item._id);
   };
 
