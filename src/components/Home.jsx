@@ -2,43 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "../style/Home.css";
 
-const handleSubscribe = async (priceId, plan) => {
-  const user = JSON.parse(localStorage.getItem("user"));
-
-  if (!user) {
-    window.location.href = "/login";
-    return;
-  }
-
-  try {
-    const response = await fetch("http://localhost:5000/create-checkout-session", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        priceId,
-        userId: user.id,
-        plan
-      }),
-    });
-
-    const data = await response.json();
-
-    if (data.url) {
-      window.location.href = data.url;
-    } else {
-      console.error("Error:", data);
-      alert("Error al procesar el pago");
-    }
-
-  } catch (error) {
-    console.error(error);
-    alert("Error de conexión con el servidor");
-  }
-};
 function Home() {
-  return (
+return (
 <div className="home-container">
 {/* HERO */}
 <header className="hero-section">
@@ -49,20 +14,14 @@ alt="Agro Commerce Logo"
 />
 <h1>AGRO COMMERCE</h1>
 <p>
-          La plataforma de comercialización agrícola más inteligente, 
-          analisis en tiempo real, y herramientas para hacer crecer tu negocio. 
-          Conectamos productores agrícolas hondureños con compradores
-          en todo el país.
-</p>
-        
-
+La plataforma de comercialización agrícola más inteligente, 
+analisis en tiempo real, y herramientas para hacer crecer tu negocio. 
+Conectamos productores agrícolas hondureños con compradores
+en todo el país.
+</p>     
 <div className="hero-buttons">
-<Link to="/registro" className="btn-primary">
-Empezar Ahora
-</Link>
-<Link to="/login" className="btn-secondary">
-Iniciar Sesión
-</Link>
+<Link to="/registro" className="btn-primary">Empezar Ahora</Link>
+<Link to="/login" className="btn-secondary">Iniciar Sesión</Link>
 </div>
 </header>
 
@@ -74,14 +33,14 @@ Muchos productores agrícolas enfrentan dificultades para vender sus productos d
 Nuestra plataforma elimina a los intermediarios y conecta a los productores con compradores de manera directa, rápida y segura, permitiéndoles obtener mejores precios, mayor visibilidad y oportunidades de crecimiento.
 </p>
 <img
-          className="imagen"
-          src="https://d26m4ikkajfmz.cloudfront.net/wp-content/uploads/2022/11/principal-16.jpg"
-          alt="Agricultura"
+className="imagen"
+src="https://d26m4ikkajfmz.cloudfront.net/wp-content/uploads/2022/11/principal-16.jpg"
+alt="Agricultura"
 />
 </section>
 {/* COMO FUNCIONA */}
 <section className="info-section light">
- <h2>¿Cómo funciona?</h2>
+<h2>¿Cómo funciona?</h2>
 <div className="steps">
 <div className="step">
 <h3>1. Regístrate</h3>
@@ -111,8 +70,8 @@ Realiza pedidos y coordina ventas directamente con el productor.
 <p>Productores venden sin intermediarios.</p>
 </div>
 <div className="feature-card">
-<h3>Sin comisiones ni pagas por vender tus productos</h3>
-<p>Coordina tus propias ventas a tu manera</p>
+<h3>Sin comisiones, ni pagos extras por vender tus productos</h3>
+<p>Coordina tus propias ventas a tu manera.</p>
 </div>
 <div className="feature-card">
 <h3>Mayor Alcance</h3>
@@ -141,8 +100,7 @@ Realiza pedidos y coordina ventas directamente con el productor.
 <li>Acceso al marketplace</li>
 <li>Perfil de productor</li>
 </ul>
-<Link to="/login" className="btn-plan">Obtener plan
-</Link>
+<Link to="/login" className="btn-plan">Obtener plan</Link>
 </div>
 <div className="pricing-card popular">
 <h3>Plan Estandar</h3>
@@ -152,12 +110,7 @@ Realiza pedidos y coordina ventas directamente con el productor.
 <li>Mayor visibilidad en búsquedas</li>
 <li>Estadísticas de ventas</li>
 </ul>
-<button 
-  className="btn-plan"
-  onClick={() => handleSubscribe("price_1TCPISGPea1HEkaixMefnYNU", "standard")}
->
-Obtener plan
-</button>
+<Link to="/login" className="btn-plan">Obtener plan</Link>
 </div>
 <div className="pricing-card">
 <h3>Plan Premium</h3>
@@ -167,11 +120,7 @@ Obtener plan
 <li>Promoción destacada</li>
 <li>Soporte prioritario</li>
 </ul>
-<button 
-className="btn-plan"
-onClick={() => handleSubscribe("price_1TCPJIGPea1HEkaim2g1oJiT", "premium")}>
-Obtener plan
-</button>
+<Link to="/login" className="btn-plan">Obtener plan</Link>
 </div>
 </div>
 </section>
@@ -188,9 +137,7 @@ Obtener plan
 <li>Compras hasta de 5 productos</li>
 <li>Contactar productores</li>
 </ul>
-<Link to="/login" className="btn-plan">
-Obtener plan
-</Link>
+<Link to="/login" className="btn-plan">Obtener plan</Link>
 </div>
 <div className="pricing-card popular">
 <h3>Plan Premium</h3>
@@ -200,23 +147,17 @@ Obtener plan
 <li>Acceso a productores verificados</li>
 <li>Prioridad en pedidos</li>
 </ul>
-<button 
-className="btn-plan"
-onClick={() => handleSubscribe("price_1TCPRjGPea1HEkai1QMsgElg", "buyer")}>
-Obtener plan
-</button>
+<Link to="/login" className="btn-plan">Obtener plan</Link>
 </div>
 </div>
 </section>
 
 {/* CTA FINAL */}
-
 <section className="cta-section">
 <h2>Empieza a vender o comprar hoy</h2>
-
-  <p>
-          Únete a la red agrícola digital que conecta productores
-          y compradores en todo Honduras.
+ <p>
+Únete a la red agrícola digital que conecta productores
+y compradores en todo Honduras.
 </p>
 
 <Link to="/registro" className="btn-primary">
@@ -228,9 +169,9 @@ Crear Cuenta
 {/* FOOTER */}
 
 <footer className="footer">
-        <p>
-          © 2026 AGRO COMMERCE - Marketplace agrícola para Honduras
-        </p>
+<p>
+© 2026 AGRO COMMERCE - Marketplace agrícola para Honduras
+</p>
 </footer>
 
 </div>

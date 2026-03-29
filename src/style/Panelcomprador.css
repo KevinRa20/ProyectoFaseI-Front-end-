@@ -233,6 +233,89 @@
   cursor: pointer;
   transition: var(--transicion);
 }
+.form-reseña {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  max-width: 400px;
+  margin-top: 15px;
+}
+
+.titulo {
+  margin-bottom: 15px;
+}
+
+.rating {
+  margin-bottom: 15px;
+}
+
+.estrellas {
+  display: flex;
+  gap: 5px;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.estrella {
+  opacity: 0.4;
+  transition: 0.2s;
+}
+
+.estrella:hover,
+.estrella.activa {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.campo {
+  margin-bottom: 15px;
+}
+
+textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  resize: none;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.acciones {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-cancelar {
+  background: transparent;
+  border: none;
+  color: #666;
+  cursor: pointer;
+}
+
+.btn-publicar {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-publicar:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.btn-publicar:hover:not(:disabled) {
+  background: #0056b3;
+}
 
 .btn-agregar:hover, .btn-reseñas:hover {
   filter: brightness(1.2);

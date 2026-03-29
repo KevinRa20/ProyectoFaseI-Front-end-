@@ -13,54 +13,40 @@ function Register() {
   });
 
   const navigate = useNavigate();
-
   const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  try {
-    const res = await fetch("http://localhost:5000/api/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(form)
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
-
-      //  SI HAY URL → IR A STRIPE
-      if (data.url) {
-        window.location.href = data.url;
-        return;
-      }
-
-      //  PLAN GRATIS
-      localStorage.setItem("usuario", JSON.stringify({
-        name: form.name,
-        email: form.email,
-        rol: form.rol
-      }));
-
-      alert("Usuario registrado correctamente");
-      navigate("/login");
-
-    } else {
-      alert(data.msg || "Error al registrar usuario");
-    }
-
-  } catch (error) {
-    console.error("Error:", error);
-    alert("Error al conectar con el servidor");
-  }
+setForm({
+...form,
+[e.target.name]: e.target.value
+ });
+ };
+const handleSubmit = async (e) => {
+e.preventDefault();
+try {
+const res = await fetch("http://localhost:5000/api/auth/register", {
+method: "POST",
+headers: {"Content-Type": "application/json"
+},
+body: JSON.stringify(form)
+});
+const data = await res.json();
+if (res.ok) {
+//  SI HAY URL → IR A STRIPE
+ if (data.url) {
+ window.location.href = data.url;
+return;
+}
+//  PLAN GRATIS
+localStorage.setItem("usuario", JSON.stringify({
+name: form.name,
+email: form.email,
+rol: form.rol}));
+alert("Usuario registrado correctamente");navigate("/login");
+} else {
+alert(data.msg || "Error al registrar usuario");}
+} catch (error) {
+console.error("Error:", error);
+alert("Error al conectar con el servidor");
+}
 };
 
   return (

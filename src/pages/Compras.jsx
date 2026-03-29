@@ -61,30 +61,27 @@ import "../style/Compras.css";
   };
 
   try {
+for (const item of carrito) {
+await fetch("http://localhost:5000/api/compras", {
+method: "POST",
+headers: {"Content-Type": "application/json"},
+body: JSON.stringify({
+nombreComprador: item.comprador.nombre,
+producto: item.nombre,
+cantidad: item.cantidad,
+precio: item.precio,
+total: item.total
+})
+});
+}
+} catch (error) {
+console.error("Error al registrar la compra:", error);
+}
 
-    for (const item of carrito) {
-      await fetch("http://localhost:5000/api/compras", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          nombreComprador: item.comprador.nombre,
-          producto: item.nombre,
-          cantidad: item.cantidad,
-          precio: item.precio,
-          total: item.total
-        })
-      });
-    }
-
-  } catch (error) {
-    console.error("Error al registrar la compra:", error);
-  }
-
-  const nuevoHistorial = [...historial, resumen];
+  const nuevoHistorial = [...historial, resumen,productoSeleccionado];
   setHistorial(nuevoHistorial);
   localStorage.setItem("historialCompras", JSON.stringify(nuevoHistorial));
+  localStorage.setItem("productos",JSON.stringify(nuevoHistorial));
 
   const notificaciones = JSON.parse(localStorage.getItem("notificaciones")) || [];
 
@@ -108,15 +105,15 @@ import "../style/Compras.css";
 };
 
   const cambiarEstado = (id, nuevoEstado) => {
-    const actualizado = historial.map(p =>
-      p.id === id ? { ...p, estado: nuevoEstado } : p
+  const actualizado = historial.map(p =>
+  p.id === id ? { ...p, estado: nuevoEstado } : p
     );
     setHistorial(actualizado);
     localStorage.setItem("historialCompras", JSON.stringify(actualizado));
   };
 
-  return (
-    <>
+return (
+<>
 {vista === "carrito" && (
 <div className="carrito">
 <h2>Detalle de la Compra</h2>

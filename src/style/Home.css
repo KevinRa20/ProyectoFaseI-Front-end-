@@ -292,7 +292,7 @@
   max-width:650px;
   margin:auto;
   margin-bottom:30px;
-  color: #e8f5e9;
+  color: #d8dcd8;
   font-weight: bold;
 }
 
@@ -301,9 +301,10 @@
 .footer{
   text-align:center;
   padding:30px;
-  background:#1b5e20;
+  background:#88d98d;
   color:white;
   font-size:0.9rem;
+  font-weight: bold;
 }
 
 /* ANIMACIONES */
@@ -334,6 +335,8 @@
 
 .hero-section p{
   font-size:1rem;
+  
+  
 }
 
 }

@@ -4,59 +4,44 @@ import "../style/Login.css";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const [form, setForm] = useState({
-    email: "",
-    password: ""
-  });
+const [form, setForm] = useState({
+email: "",
+password: ""
+});
+const handleChange = (e) => {
+setForm({...form,
+[e.target.name]: e.target.value
+});
+};
+const navigate = useNavigate();
+const handleSubmit = async (e) => {
+e.preventDefault();
+try {
+const res = await fetch("http://localhost:5000/api/auth/login", {
+method: "POST",
+headers: {
+"Content-Type": "application/json"
+},
+body: JSON.stringify(form)});
+const data = await res.json(); 
+alert(data.msg);
 
-
-  const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value
-    });
-  };
-  
-
-  
- const navigate = useNavigate();
-   const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  try {
-    const res = await fetch("http://localhost:5000/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(form)
-    });
-
-    const data = await res.json(); 
-    alert(data.msg);
-
-    if (res.ok) {
-  // guardar usuario en localStorage
-  localStorage.setItem(
-    "usuario",
-    JSON.stringify({
-      email: form.email.toLowerCase(),
-      rol: data.rol
-    })
-  );
-      setForm({ email: "", password: "" });
-
-      if (data.rol === "productor") {
-        navigate("/panelproductor");
-      } else if (data.rol === "comprador") {
-        navigate("/panelcomprador");
-      }
-    }
-
-  } catch (error) {
-    console.error("Error:", error);
-    alert("Error al conectar con el servidor");
-  }
+if (res.ok) {
+// guardar usuario en localStorage
+localStorage.setItem("usuario",JSON.stringify({
+email: form.email.toLowerCase(),
+rol: data.rol
+}));
+setForm({ email: "", password: "" });
+if (data.rol === "productor") {
+navigate("/panelproductor");
+} else if (data.rol === "comprador") {
+navigate("/panelcomprador");}
+}
+} catch (error) {
+console.error("Error:", error);
+alert("Error al conectar con el servidor");
+}
 };
 
   return (
