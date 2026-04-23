@@ -2,7 +2,18 @@ import React, { useEffect, useState } from "react";
 import "../style/NotificacionesProductor.css";
 
 const NotificacionesProductor = () => {
-  const [pedidos, setPedidos] = useState([]);
+const [pedidos, setPedidos] = useState([]);
+const [mostrarLogistica, setMostrarLogistica] = useState(null);
+const [formVisible, setFormVisible] = useState(null);
+const [formTransporte, setFormTransporte] = useState({
+  nombre: "",
+  producto: "",
+  telefono: "",
+  tipoTransporte: "",
+  fechaInicio: "",
+  fechaEntrega: "",
+  horaEntrega: ""
+});
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("notificaciones")) || [];
@@ -28,12 +39,42 @@ const aceptarPedido = (id) => {
   });
 
   localStorage.setItem("ordenes", JSON.stringify(nuevasOrdenes));
+   window.dispatchEvent(new Event("ordenActualizada"));
 
 };
 const contactarWhatsApp = (telefono, nombre, id) => {
   const mensaje = `Hola ${nombre}, soy el productor. Estoy contactándote sobre tu pedido #${id}.`;
   const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
   window.open(url, "_blank");
+};
+const enviarSolicitudTransporte = (pedido) => {
+  const envios = JSON.parse(localStorage.getItem("envios")) || [];
+
+  const nuevoEnvio = {
+    id: Date.now(),
+    pedidoId: pedido.id,
+    ...formTransporte,
+    estado: "Pendiente"
+  };
+
+  envios.push(nuevoEnvio);
+  localStorage.setItem("envios", JSON.stringify(envios));
+
+  alert("Solicitud Enviada correctamente. Te contactaremos para el seguimiento de tu pedido");
+
+  // Reset estados
+  setFormVisible(null);
+  setMostrarLogistica(null);
+
+  setFormTransporte({
+    nombre: "",
+    producto: "",
+    telefono: "",
+    tipoTransporte: "",
+    fechaInicio: "",
+    fechaEntrega: "",
+    horaEntrega: ""
+  });
 };
   return (
   <div className="notificaciones-wrapper">
@@ -91,14 +132,83 @@ className="btn-marcar"
 onClick={() => {
 marcarLeido(p.id);
 aceptarPedido(p.id);
-}}
->
-Aceptar Pedido
-</button>
+setMostrarLogistica(p.id);
+}}>Aceptar Pedido</button>
 ) : (
 <div className="acciones-pedido">
 <span className="gestionado-check">✓ Aceptado</span>
+{mostrarLogistica === p.id && (
+<div className="logistica-box">
+<p>¿Deseas solicitar un servicio de transporte para este pedido?</p>
+<button className="btn-logistica"  onClick={() => setFormVisible(p.id)}>Solicitar Transporte</button>
+<button className="btn-skip" onClick={() => setMostrarLogistica(null)}>Omitir</button>
+</div>
+)}
+{formVisible === p.id && (
+<div className="form-logistica">
+<h4>Solicitud de Transporte</h4>
 
+<input
+type="text"
+placeholder="Nombre"
+value={formTransporte.nombre}
+onChange={(e) =>
+setFormTransporte({ ...formTransporte, nombre: e.target.value })
+} />
+
+<input
+type="text"
+placeholder="Nombre del producto"
+value={formTransporte.producto}
+onChange={(e) =>
+setFormTransporte({ ...formTransporte, producto: e.target.value })}
+/>
+
+<input
+type="text"
+placeholder="Teléfono"
+value={formTransporte.telefono}
+onChange={(e) =>
+setFormTransporte({ ...formTransporte, telefono: e.target.value })}
+/>
+<select
+value={formTransporte.tipoTransporte}
+onChange={(e) =>
+setFormTransporte({ ...formTransporte, tipoTransporte: e.target.value })}>
+<option value="">Tipo de transporte</option>
+<option value="Camión">Camión</option>
+<option value="Motocarga">Motocarga</option>
+<option value="Pickup">Pickup</option>
+</select>
+
+<input
+type="date"
+value={formTransporte.fechaInicio}
+onChange={(e) =>
+setFormTransporte({ ...formTransporte, fechaInicio: e.target.value })
+}
+/>
+
+<input
+type="date"
+value={formTransporte.fechaEntrega}
+onChange={(e) =>
+setFormTransporte({ ...formTransporte, fechaEntrega: e.target.value })
+}
+/>
+
+<input
+type="time"
+value={formTransporte.horaEntrega}
+onChange={(e) =>
+setFormTransporte({ ...formTransporte, horaEntrega: e.target.value })
+}/>
+
+<button
+className="btn-enviar"
+onClick={() => enviarSolicitudTransporte(p)}>Enviar Solicitud</button>
+</div>
+)}
 <button
 className="btn-whatsapp"
 onClick={() =>
@@ -107,9 +217,7 @@ p.comprador.telefono,
 p.comprador.nombre,
 p.id
 )
-}
->
-Contactar por WhatsApp
+}>Contactar por WhatsApp
 </button>
 </div>
 )}

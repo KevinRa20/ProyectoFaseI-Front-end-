@@ -23,7 +23,7 @@ const PanelProductor = () => {
   plan === "basic" ? 5 :
   plan === "standard" ? 10 :
   Infinity;
-const totalOrdenes = ordenes.length;
+const totalOrdenes = ordenes.filter(o => o.estado === "aceptado").length;
 const [perfil, setPerfil] = useState({
 productor:"",
 finca: "",
@@ -130,19 +130,21 @@ window.removeEventListener("ordenActualizada", listener);
 }, [perfil.productor]);
 
 useEffect(() => {
-if (ordenes.length === 0) return;
 setProductos(prevProductos => {
 return prevProductos.map(p => {
 let vendido = 0;
 let ingresos = 0;
 ordenes.forEach(o => {
-if (o.producto === p.nombre && o.estado === "aceptado") {
-vendido += Number(o.cantidad);
-ingresos += Number(o.cantidad) * Number(o.precio);
+if (o.estado === "aceptado" && o.productos) {
+o.productos.forEach(prod => {
+if (prod.nombre === p.nombre) {
+vendido += Number(prod.cantidad);
+ingresos += Number(prod.cantidad) * Number(prod.precio);
 }});
-return {...p, vendido, ingresos
-};});
+}
 });
+return { ...p, vendido, ingresos };
+});});
 }, [ordenes]);
 const handleImage = (e) => {
 const file = e.target.files[0];
@@ -225,7 +227,7 @@ return (
 )}
 <header className="header">
 <div>
-<h1>Agro Commerce</h1>
+<h1>AGROCOMMERCE</h1>
 <h2>Bienvenido, Has ingresado como productor</h2>
 </div>
 <button className="logout1"onClick={() => navigate("/login")}>Salir</button>
@@ -252,7 +254,7 @@ alt="icono-notificaciones"
 </div>
 </header>
 <nav className="menu">
-<button className="active"onClick={() => navigate("/panelproductor")}>Análisis de Ventas</button>
+<button className="active"onClick={() => navigate("/panelproductor")}>Mis Ventas</button>
 <button onClick={() => setMostrarForm(true)}>Mis Productos</button>
 <button onClick={() => setVista("inventario")}>Inventario</button>
 <button onClick={() => setVista("notificaciones")}>Notificaciones</button>
@@ -337,7 +339,7 @@ L.{p.precio} / {p.unidad}
 <section className="cardsproductor">
 <div className="card green">
 <h3>Ingresos Totales</h3>
-<p>L.{ingresosTotales }</p>
+<p>L.{ingresosTotales.toLocaleString()}</p>
 </div>
 <div className="card blue">
 <h3>Total Órdenes</h3>

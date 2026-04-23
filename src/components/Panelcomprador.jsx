@@ -160,7 +160,7 @@ return (
 {/* HEADER */}
 <header className="header">
 <div>
-<h1>Agro Commerce</h1>
+<h1>AGROCOMMERCE</h1>
 <h2>Bienvenido, Has ingresado como comprador</h2>
 </div>
 <div className="icons">

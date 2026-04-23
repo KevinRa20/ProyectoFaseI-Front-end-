@@ -21,7 +21,8 @@ import "../style/Compras.css";
 
   useEffect(() => {
     const historialGuardado = JSON.parse(localStorage.getItem("historialCompras")) || [];
-    setHistorial(historialGuardado);
+     const historialLimpio = historialGuardado.filter(item => item !== null);
+    setHistorial(historialLimpio);
   }, []);
 
   useEffect(() => {
@@ -31,29 +32,33 @@ import "../style/Compras.css";
   }, [productoSeleccionado]);
 
   const agregarAlCarrito = () => {
-    const total = cantidad * productoSeleccionado.precio;
+   const total = Number(cantidad) * Number(productoSeleccionado.precio);
 
     const nuevoItem = {
-      ...productoSeleccionado,
-      cantidad,
-      total,
-      comprador: datosComprador
-    };
+    ...productoSeleccionado,
+    cantidad: Number(cantidad),
+    total,
+    comprador: datosComprador
+  };
 
-    setCarrito([...carrito, nuevoItem]);
-    setMostrarFormulario(false);
-    setCantidad(1);
-    setProductoSeleccionado(null);
-    alert("El producto se agregó al carrito correctamente");
+  setCarrito([...carrito, nuevoItem]);
+  setMostrarFormulario(false);
+  setCantidad(1);
+  setProductoSeleccionado(null);
+  alert("El producto se agregó al carrito correctamente");
   };
 
   const finalizarCompra = async () => {
   const fecha = new Date().toLocaleString();
-  const totalCompra = carrito.reduce((acc, item) => acc + item.total, 0);
+
+  const totalCompra = carrito.reduce(
+    (acc, item) => acc + Number(item.total),
+    0
+  );
 
   const resumen = {
     id: Date.now(),
-    comprador: carrito[0].comprador.nombre,
+    comprador: carrito[0]?.comprador?.nombre || "N/A",
     productos: carrito,
     totalCompra,
     fecha,
@@ -61,33 +66,33 @@ import "../style/Compras.css";
   };
 
   try {
-for (const item of carrito) {
-await fetch("http://localhost:5000/api/compras", {
-method: "POST",
-headers: {"Content-Type": "application/json"},
-body: JSON.stringify({
-nombreComprador: item.comprador.nombre,
-producto: item.nombre,
-cantidad: item.cantidad,
-precio: item.precio,
-total: item.total
-})
-});
-}
-} catch (error) {
-console.error("Error al registrar la compra:", error);
-}
+    for (const item of carrito) {
+      await fetch("http://localhost:5000/api/compras", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nombreComprador: item.comprador.nombre,
+          producto: item.nombre,
+          cantidad: item.cantidad,
+          precio: item.precio,
+          total: item.total
+        })
+      });
+    }
+  } catch (error) {
+    console.error("Error al registrar la compra:", error);
+  }
 
-  const nuevoHistorial = [...historial, resumen,productoSeleccionado];
+  const nuevoHistorial = [...historial, resumen]; 
   setHistorial(nuevoHistorial);
+
   localStorage.setItem("historialCompras", JSON.stringify(nuevoHistorial));
-  localStorage.setItem("productos",JSON.stringify(nuevoHistorial));
 
   const notificaciones = JSON.parse(localStorage.getItem("notificaciones")) || [];
 
   const nuevaNotificacion = {
     id: Date.now(),
-    comprador: carrito[0].comprador,
+    comprador: carrito[0]?.comprador,
     productos: carrito,
     fecha,
     leido: false
@@ -102,16 +107,11 @@ console.error("Error al registrar la compra:", error);
   setCarrito([]);
   setMostrarPago(false);
   setVista("resumen");
-};
-
-  const cambiarEstado = (id, nuevoEstado) => {
-  const actualizado = historial.map(p =>
-  p.id === id ? { ...p, estado: nuevoEstado } : p
-    );
-    setHistorial(actualizado);
-    localStorage.setItem("historialCompras", JSON.stringify(actualizado));
-  };
-
+};;
+const cambiarEstado = (id, nuevoEstado) => 
+{ const actualizado = historial.map(p => p.id === id ? { ...p, estado: nuevoEstado } : p ); 
+setHistorial(actualizado); 
+localStorage.setItem("historialCompras", JSON.stringify(actualizado)); };
 return (
 <>
 {vista === "carrito" && (
@@ -165,7 +165,9 @@ onChange={(e) => setValorPagar(e.target.value)}
 {vista === "historial" && (
 <div className="historial-container">
 <h2>Historial de Compras</h2>
-{historial.map(pedido => (
+{historial
+.filter(pedido => pedido !== null)
+.map(pedido => (
 <div key={pedido.id} className="pedido-card">
 <div className="pedido-info">
 <strong>L.{pedido.totalCompra}</strong>

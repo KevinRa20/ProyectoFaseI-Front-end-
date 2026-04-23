@@ -15,6 +15,7 @@ function App() {
       <Route path="/registro" element={<Register />} />
       <Route path="/panelproductor" element={<Pantallaprincipal />} />
       <Route path="/panelcomprador" element={<PantallaComprador />} />
+      
     </Routes>
   );
 }
