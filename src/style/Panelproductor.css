@@ -409,3 +409,13 @@ grid-template-columns:1fr;
 }
 
 }
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+}

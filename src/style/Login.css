@@ -109,3 +109,13 @@ a:hover {
     transform: translateY(0);
   }
 }
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+}

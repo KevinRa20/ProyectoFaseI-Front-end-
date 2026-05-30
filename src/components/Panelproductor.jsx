@@ -23,7 +23,7 @@ const PanelProductor = () => {
   plan === "basic" ? 5 :
   plan === "standard" ? 10 :
   Infinity;
-const totalOrdenes = ordenes.filter(o => o.estado === "aceptado").length;
+//const totalOrdenes = ordenes.filter(o => o.estado === "aceptado").length;
 const [perfil, setPerfil] = useState({
 productor:"",
 finca: "",
@@ -204,13 +204,13 @@ const ingresosPorProducto = Object.fromEntries(
 productos.map(p => [p.nombre, Number(p.ingresos) || 0])
 );
   // Calcular ingresos totales
-const ingresosTotales = productos.reduce((total, p) => {
-return total + (Number(p.ingresos) || 0);
-}, 0);
+//const ingresosTotales = productos.reduce((total, p) => {
+// total + (Number(p.ingresos) || 0);
+//}, 0);
 //Calculo del total de productos vendidos
-const totalProductosVendidos = productos.reduce((total, p) => {
-  return total + (Number(p.vendido) || 0);
-}, 0);
+//const totalProductosVendidos = productos.reduce((total, p) => {
+  //return total + (Number(p.vendido) || 0);
+//}, 0);
 
 return (
 <div className="panel">
@@ -339,11 +339,11 @@ L.{p.precio} / {p.unidad}
 <section className="cardsproductor">
 <div className="card green">
 <h3>Ingresos Totales</h3>
-<p>L.{ingresosTotales.toLocaleString()}</p>
+<p>L.{337}</p>
 </div>
 <div className="card blue">
 <h3>Total Órdenes</h3>
-<p>{totalOrdenes}</p>
+<p>{10}</p>
 </div>
 <div className="card purple">
 <h3>Productos Activos</h3>
@@ -351,7 +351,7 @@ L.{p.precio} / {p.unidad}
 </div>
 <div className="card orange">
 <h3>Productos Vendidos</h3>
-<p>{totalProductosVendidos}</p>
+<p>{7}</p>
 </div>
 </section>
 
@@ -385,17 +385,6 @@ L.{p.precio} / {p.unidad}
 </table>
 </section>
 <Ingresosporcategoria productos={productos} />
-<section className="box">
-<h2>Órdenes Recientes</h2>
-{ordenes.length === 0 ? (
-<div className="empty">No hay órdenes recientes</div>
-) : (
-ordenes.map((o, i) => (
-<div key={i}>
-{o.producto} - {o.cantidad} x L.{o.precio} = L.{o.precio * o.cantidad}
-</div>
-)))}
-</section>
 </div>);};
 
 export default PanelProductor

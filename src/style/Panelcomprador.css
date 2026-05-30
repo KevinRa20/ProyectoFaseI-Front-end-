@@ -384,3 +384,13 @@ textarea:focus {
     flex-direction: column;
   }
 }
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+}
